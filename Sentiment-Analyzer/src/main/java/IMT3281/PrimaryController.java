@@ -1,11 +1,14 @@
 package IMT3281;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -14,9 +17,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -75,19 +77,37 @@ public class PrimaryController implements Initializable {
         fileChooser.showOpenMultipleDialog(stage);
     }
     @FXML
-    private void instruction(){
-       // List<String > allLines;
-       // try {
-        //   File file = new File("src/main/resources/IMT3281/instruction.txt");
-         //   allLines = Files.readAllLines((file.toPath()));
-          //  Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            //alert.setContentText(allLines.iterator().next());
-        //} catch (IOException e) {
-          //  e.printStackTrace();
-       // }
+    private void instruction() throws IOException {
+        FileReader fileReader=new FileReader("Sentiment-Anal yzer/src/main/resources/IMT3281/instruction");
+        BufferedReader bufferedReader=new BufferedReader(fileReader);
+        List<String>sentences = new ArrayList<>();
+        String words;
+        String str = "";
+        TextArea textArea = new TextArea();
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        while ((words = bufferedReader.readLine()) != null) {
+            sentences.add(words);
+
+
+            str+= " "+words+"\n";
+            textArea.setText(str);
+        }
+        for (String s:sentences){
+            System.out.println(s);;}
+        Stage newStage = new Stage();
+        Scene scene = new Scene(textArea,300,300);
+        newStage.setTitle("Instructions");
+        newStage.setScene(scene);
+        newStage.show();
+
+
+
+        bufferedReader.close();
+        fileReader.close();
     }
 
-    @FXML
+        @FXML
     private void onExit(){
         System.exit(0);
 
