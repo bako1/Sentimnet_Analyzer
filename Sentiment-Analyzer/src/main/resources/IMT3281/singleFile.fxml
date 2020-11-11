@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="root" prefHeight="252.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.SingleFileController">
+   <children>
+      <MenuBar prefHeight="25.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem onAction="#singleFileChooser" text="Brows Single File" />
+                  <MenuItem text="Brows Multiple File" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem onAction="#onExit" text="Exit" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Go Back">
+            <items>
+              <MenuItem fx:id="goBack" mnemonicParsing="false" onAction="#goBackToHomePage" text="Back to Main page">
+                     <accelerator>
+                        <KeyCodeCombination alt="ANY" code="HOME" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Usage" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="About">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Author" />
+                  <MenuItem mnemonicParsing="false" text="Contacts" />
+                  <MenuItem mnemonicParsing="false" text="Version" />
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+      <VBox layoutX="5.0" layoutY="35.0" prefHeight="369.0" prefWidth="590.0">
+         <children>
+            <TableView fx:id="tableView" prefHeight="363.0" prefWidth="590.0">
+              <columns>
+                <TableColumn fx:id="fileName" prefWidth="75.0" text="File Name" />
+                  <TableColumn fx:id="polarity" prefWidth="75.0" text="Polarity" />
+                  <TableColumn fx:id="occurrence" prefWidth="75.0" text="Occurrence" />
+                <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
