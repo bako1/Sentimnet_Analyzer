@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ReadFiles {
-    private List<String> sentence;
 
     public ReadFiles() {
     }
@@ -90,16 +89,12 @@ public class ReadFiles {
         }
         return csvFileAndLines;
     }
-
-    public List<String> getSentence() {
-        return sentence;
-    }
+    
 
     public HashMap<String, String> readFiles(List<File> file) {
         HashMap<String, String> fileAndLines = null;
 
         for (File files : file) {
-            List<String> listsOfLines = new ArrayList<>();
             //Check whether file is selected
             if (file != null) {
                 if (files.getPath().endsWith(".txt")) {

@@ -67,11 +67,13 @@ public class SingleFileController extends PrimaryController implements Initializ
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+
         subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
         occurrence.setCellValueFactory(new PropertyValueFactory<>("occurrence"));
         polarity.setCellValueFactory(new PropertyValueFactory<>("polarity"));
         sentence.setCellValueFactory(new PropertyValueFactory<>("sentence"));
-
+        sentence.setResizable(true);
+        tableView.isResizable();
         tableView.setItems(getInfo());
     }
 
