@@ -14,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -65,21 +67,11 @@ public class PrimaryController {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("IMT3281/instruction.txt").getFile());
 
-        FileReader fileReader=new FileReader(file);
-        BufferedReader bufferedReader=new BufferedReader(fileReader);
-        List<String>sentences = new ArrayList<>();
-        String words;
-        String str = "";
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
         textArea.setEditable(false);
-        while ((words = bufferedReader.readLine()) != null) {
-            sentences.add(words);
-
-
-            str+= " "+words+"\n";
-            textArea.setText(str);
-        }
+        String contents = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+        textArea.setText(contents);
 
         Stage newStage = new Stage();
         Scene scene = new Scene(textArea,400,200);
@@ -87,8 +79,4 @@ public class PrimaryController {
         newStage.setScene(scene);
         newStage.show();
 
-
-
-        bufferedReader.close();
-        fileReader.close();
     }}
