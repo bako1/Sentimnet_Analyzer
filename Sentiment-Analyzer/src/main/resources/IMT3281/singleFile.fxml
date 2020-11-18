@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="root" prefHeight="252.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.2"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.SingleFileController">
+
+      <MenuBar prefHeight="25.0" prefWidth="600.0">
+
+          <Menu mnemonicParsing="false" text="File">
+
+              <!--<MenuItem onAction="#fileChooser" text="Brows Single File">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="A" control="ANY" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>-->
+                  <MenuItem onAction="#browseFiles" text="Brows Multiple File">
+                     <accelerator>
+                        <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem onAction="#onexit" text="Exit" />
+
+          </Menu>
+          <Menu mnemonicParsing="false" text="Go Back">
+              <MenuItem fx:id="goBackToHomePage" mnemonicParsing="false" onAction="#goBackToHomePage" text="Back to Main page">
+                         <accelerator>
+                             <KeyCodeCombination alt="ANY" code="HOME" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                         </accelerator></MenuItem>
+
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem fx:id="usage" mnemonicParsing="false" onAction="#usage" text="Usage" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="About">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Author" />
+                  <MenuItem mnemonicParsing="false" text="Contacts" />
+                  <MenuItem mnemonicParsing="false" text="Version" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Export">
+               <items>
+                  <MenuItem onAction="#browseFiles" text="Export to XML">
+                     <accelerator>
+                        <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem onAction="#onexit" text="Export to CSV" />
+               </items>
+            </Menu>
+
+      </MenuBar>
+      <TableView fx:id="tableView" layoutX="5.0" layoutY="27.0" prefHeight="363.0" prefWidth="590.0">
+        <columns>
+          <TableColumn fx:id="fileName" prefWidth="75.0" text="File Name" />
+            <TableColumn fx:id="sentence" maxWidth="400" minWidth="300" prefWidth="400" text="Sentence" />
+            <TableColumn fx:id="polarity" prefWidth="75.0" text="Polarity" />
+            <TableColumn fx:id="occurrence" prefWidth="75.0" text="Occurrence" />
+          <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+
+</AnchorPane>

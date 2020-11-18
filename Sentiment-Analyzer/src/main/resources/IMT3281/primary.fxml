@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="root" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.PrimaryController">
-    <padding>
-        <Insets bottom="10.0" left="5.0" right="10.0" />
-    </padding>
-    <children>
-        <MenuBar>
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem fx:id="browseSingleFile" onAction="#singleFileChooser" text="Browse Single File" />
-                        <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#multipleFileChooser" text="Browse Multiple File" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="toExit" mnemonicParsing="true" onAction="#onExit" text="Exit">
-                            <accelerator>
-                                <KeyCodeCombination alt="ANY" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                            </accelerator>
-                        </MenuItem>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Extract File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Extract to XML" />
-                        <MenuItem mnemonicParsing="false" text="Extract to CSV" />
-                    </items>
-                </Menu>
-                <Menu text="Help">
-                    <items>
-                        <MenuItem fx:id="usage" onAction="#instruction" text="Usage">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="600.0" style="-fx-background-color: #ccddee; -fx-background-image: url(IMT3281/sentiment.png); -fx-background-repeat: repeat;"
+            xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.PrimaryController">
+   <children>
+
+       <MenuBar layoutX="-3.0" layoutY="-7.0" prefHeight="25.0" prefWidth="1070.0" style="-fx-background-color: white;">
+           <menus>
+               <Menu mnemonicParsing="false" text="File">
+                   <items>
+                       <!--<MenuItem fx:id="browseSingleFile" onAction="#fileChooser" text="Browse Single File">
                      <accelerator>
-                        <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                        <KeyCodeCombination alt="ANY" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>-->
+                       <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#multipleFileChooser" text="Browse Multiple File">
+                     <accelerator>
+                        <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                    </items>
-                </Menu>
-                <Menu text="About">
-                    <items>
-                        <MenuItem text="Author" />
-                        <MenuItem text="Version" />
-                        <SeparatorMenuItem />
-                        <MenuItem text="Contact" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-        <TableView fx:id="tableView" prefHeight="337.0" prefWidth="677.0">
-            <columns>
-                <TableColumn fx:id="fileName" minWidth="-Infinity" prefWidth="100.0" text="File Name" />
-                <TableColumn fx:id="subject" minWidth="-Infinity" prefWidth="100.0" text="Subject" />
-                <TableColumn fx:id="polarity" minWidth="-Infinity" prefWidth="100.0" text="Polarity" />
-                <TableColumn fx:id="occurrence" minWidth="-Infinity" prefWidth="100.0" text="Occurrence" />
-            </columns>
-        </TableView>
-    </children>
-    </VBox>
+                       <SeparatorMenuItem mnemonicParsing="false" />
+                       <MenuItem fx:id="toExit" onAction="#onExit" text="Exit">
+                           <accelerator>
+                               <KeyCodeCombination alt="ANY" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                       </MenuItem>
+                   </items>
+               <accelerator>
+                  <KeyCodeCombination alt="ANY" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+               </Menu>
+               <Menu text="Help">
+                   <items>
+                       <MenuItem fx:id="usage" onAction="#instruction" text="Usage">
+                           <accelerator>
+                               <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                   </items>
+               </Menu>
+               <Menu text="About">
+                   <items>
+                       <MenuItem text="Author" />
+                       <MenuItem text="Version" />
+                       <SeparatorMenuItem />
+                       <MenuItem text="Contact" />
+                   </items>
+               </Menu>
+           </menus>
+         <effect>
+            <Blend />
+         </effect>
+       </MenuBar>
+      <VBox layoutY="25.0" prefHeight="411.0" prefWidth="600.0" />
+   </children>
+</AnchorPane>
