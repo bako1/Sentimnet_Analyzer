@@ -65,6 +65,18 @@ public class PrimaryController {
 
     System.exit(0);
     }
+    Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                instruction();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        }
+    };
+
     @FXML
     public void instruction() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -96,4 +108,6 @@ public class PrimaryController {
 
         bufferedReader.close();
         fileReader.close();
-    }}
+    }
+
+}
