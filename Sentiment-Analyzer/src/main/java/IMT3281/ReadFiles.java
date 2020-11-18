@@ -125,9 +125,6 @@ public class ReadFiles {
 
                 }
             }
-
-
-
         }
         return fileAndLines;
     }

@@ -18,7 +18,7 @@
                         <KeyCodeCombination alt="ANY" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>-->
-                       <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#multipleFileChooser" text="Browse Multiple File">
+                       <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#multipleFileChooser" text="Browse files">
                      <accelerator>
                         <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
