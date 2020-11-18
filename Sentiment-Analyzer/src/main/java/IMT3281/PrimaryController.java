@@ -31,7 +31,7 @@ public class PrimaryController {
     //}
 
     @FXML
-    public void multipleFileChooser() throws IOException {
+    public void FileChooser() throws IOException {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Multiple file");
@@ -44,12 +44,7 @@ public class PrimaryController {
 
         Parent parent;
         if (file != null) {
-            if ((long) file.size() == 1) {
-                parent = FXMLLoader.load(getClass().getResource("singleFile.fxml"));
-
-            } else {
-                parent = FXMLLoader.load(getClass().getResource("multipleFile.fxml"));
-            }
+            parent = FXMLLoader.load(getClass().getResource("FileChooser.fxml"));
             Scene scene = new Scene(parent);
             stage.setScene(scene);
             stage.show();

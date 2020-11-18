@@ -23,7 +23,7 @@ import java.net.URL;
 
 import java.util.*;
 
-public class SingleFileController extends PrimaryController implements Initializable {
+public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
     public TableView<Table> tableView;
@@ -39,7 +39,7 @@ public class SingleFileController extends PrimaryController implements Initializ
     public TableColumn<Table, String> sentence;
     @FXML
     private  AnchorPane root;
-    public SingleFileController(){}
+    public Analyzer(){}
 
     @FXML
     public void onexit( ) {
@@ -82,7 +82,7 @@ public class SingleFileController extends PrimaryController implements Initializ
         CoreDocument coreDocument;
         Table table;
 
-        HashMap<String, String>listHashMap = readFiles.readFiles(file);
+        HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
 
         for(Map.Entry<String, String>read : listHashMap.entrySet()) { // For every file
             String text = read.getValue();
@@ -91,6 +91,7 @@ public class SingleFileController extends PrimaryController implements Initializ
             List<CoreSentence> sentenceList = coreDocument.sentences();
             for (CoreSentence sentence : sentenceList) { // For every sentence
                 String sentiment = sentence.sentiment();
+                System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment); // Console version of output, for debugging
                 table = new Table(read.getKey(), sentence.toString(), "***må jobbes", sentiment, 0);
                 tableObservableList.add(table);
             }
@@ -98,7 +99,7 @@ public class SingleFileController extends PrimaryController implements Initializ
         return tableObservableList;
     }
 @FXML
-    public void browseFiles() throws IOException { multipleFileChooser();}
+    public void browseFiles() throws IOException { FileChooser();}
 
     @FXML
     private void usage() throws IOException {
