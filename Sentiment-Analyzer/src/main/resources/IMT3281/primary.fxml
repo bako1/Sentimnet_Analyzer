@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="root" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.PrimaryController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="600.0" style="-fx-background-color: #ccddee; -fx-background-image: url(IMT3281/sentiment.png); -fx-background-repeat: repeat;"
+            xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.PrimaryController">
    <children>
-   
-       <MenuBar prefHeight="35.0" prefWidth="500.0">
+
+       <MenuBar layoutX="-3.0" layoutY="-7.0" prefHeight="25.0" prefWidth="1070.0" style="-fx-background-color: white;">
            <menus>
                <Menu mnemonicParsing="false" text="File">
                    <items>
-                       <MenuItem fx:id="browseSingleFile" onAction="#singleFileChooser" text="Browse Single File" />
-                       <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#multipleFileChooser" text="Browse Multiple File" />
+                       <!--<MenuItem fx:id="browseSingleFile" onAction="#fileChooser" text="Browse Single File">
+                     <accelerator>
+                        <KeyCodeCombination alt="ANY" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>-->
+                       <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#multipleFileChooser" text="Browse Multiple File">
+                     <accelerator>
+                        <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                        <SeparatorMenuItem mnemonicParsing="false" />
-                       <MenuItem fx:id="toExit" mnemonicParsing="true" onAction="#onExit" text="Exit">
+                       <MenuItem fx:id="toExit" onAction="#onExit" text="Exit">
                            <accelerator>
                                <KeyCodeCombination alt="ANY" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                        </MenuItem>
                    </items>
+               <accelerator>
+                  <KeyCodeCombination alt="ANY" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
                </Menu>
                <Menu text="Help">
                    <items>
@@ -39,6 +51,10 @@
                    </items>
                </Menu>
            </menus>
+         <effect>
+            <Blend />
+         </effect>
        </MenuBar>
+      <VBox layoutY="25.0" prefHeight="411.0" prefWidth="600.0" />
    </children>
 </AnchorPane>

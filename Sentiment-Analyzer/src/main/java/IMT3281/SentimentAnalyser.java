@@ -1,7 +1,10 @@
 package IMT3281;
 
 
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.CoreSentence;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.trees.UniversalEnglishGrammaticalRelations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,32 +12,42 @@ import java.util.List;
 import java.util.Map;
 
 public class SentimentAnalyser {
-private String fileName;
-private String subject;
-private String polarity;
-private int occurrence;
-private StanfordCoreNLP stanfordCoreNLP;
+    private String fileName;
+    private String subject;
+    private String polarity;
+    private String sentence;
+    private int positiveOccurrence;
+    private int negativeOccurrence;
+    private int neutralOccurrence;
+    private int occurrence;
+    private ArrayList<String> processedSentences;
+    private StanfordCoreNLP stanfordCoreNLP;
+    private CoreDocument coreDocument;
 
-    public SentimentAnalyser(){
-        this.occurrence = 100;
-        ReadFiles readFiles = new ReadFiles();
-        stanfordCoreNLP = PipeLine.getPipeLine();
-
+    public SentimentAnalyser() {
+        processedSentences = new ArrayList<>();
 
 
     }
-    public HashMap<String,String> sentenceSplitter(HashMap<String, List>sentenceInput){
-        String[] split;
-        String simple = "[.?!]";
-        for (Map.Entry<String,List> stringHashMapEntry : sentenceInput.entrySet()){
 
-            split =  stringHashMapEntry.getValue().toString().split(simple);
-            System.out.println("File: "+stringHashMapEntry.getKey());
-            setFileName(stringHashMapEntry.getKey());
-          for(String s:split)
-            System.out.println( "\n"+s);
+
+    public void sentimentAnalysis() {
+        stanfordCoreNLP = PipeLine.getPipeLine();
+        String text = processedSentences.toString();
+        coreDocument = new CoreDocument(text);
+        stanfordCoreNLP.annotate(coreDocument);
+        //Get the sentence from the text/or paragraph
+        List<CoreSentence> coreSentences = coreDocument.sentences();
+        HashMap<String, String> sentencePolarityMap = new HashMap<>();
+        for (CoreSentence sentence : coreSentences) {
+            String sentiment = sentence.sentiment();
+            setPolarity(sentiment);
+            sentencePolarityMap.put(sentence.toString(), getPolarity());
         }
-    return null;
+        //for (Map.Entry<String, String> stringStringEntry : sentencePolarityMap.entrySet()) {
+
+        //}
+
     }
 
     public void setFileName(String fileName) {
@@ -49,12 +62,17 @@ private StanfordCoreNLP stanfordCoreNLP;
         this.polarity = polarity;
     }
 
+
+    public String getFileName() {
+        return fileName;
+    }
+
     public void setOccurrence(int occurrence) {
         this.occurrence = occurrence;
     }
 
-    public String getFileName() {
-        return fileName;
+    public int getOccurrence() {
+        return occurrence;
     }
 
     public String getSubject() {
@@ -65,7 +83,42 @@ private StanfordCoreNLP stanfordCoreNLP;
         return polarity;
     }
 
-    public int getOccurrence() {
-        return occurrence;
+    public void setPositiveOccurrence(int positiveOccurrence) {
+        this.positiveOccurrence = positiveOccurrence;
+    }
+
+    public int getPositiveOccurrence() {
+        return positiveOccurrence;
+    }
+
+    public ArrayList<String> getProcessedSentences() {
+        return processedSentences;
+    }
+
+    public String getSentence() {
+        return sentence;
+    }
+
+    public void setSentence(String sentence) {
+        this.sentence = sentence;
+    }
+
+    //splits sentences
+    public void sentenceRecognizer(HashMap<String, List> input) {
+        String text;
+        if (input != null) {
+            for (Map.Entry<String, List> listEntry : input.entrySet()) {
+                text = listEntry.getValue().toString();
+                setFileName(listEntry.getKey());
+                stanfordCoreNLP = CoreNLP.PipeLine.getPipeLine();
+                CoreDocument coreDocument = new CoreDocument(text);
+                stanfordCoreNLP.annotate(coreDocument);
+                List<CoreSentence> sentenceList = coreDocument.sentences();
+                for (CoreSentence sentence : sentenceList)
+                    processedSentences.add(sentence.toString());
+                setSentence(sentence);
+            }
+
+        }
     }
 }

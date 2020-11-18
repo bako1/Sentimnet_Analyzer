@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,11 +26,9 @@ public class App extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("primary.fxml"));
         stage.setTitle("Sentiment Analyzer");
-        stage.setScene(new Scene(root, 500, 500));
+        stage.setScene(new Scene(root, 600, 450));
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("sentiment.png")));
         stage.show();
-        ReadFiles readFiles = new ReadFiles();
-        String simple = "[.?!]";
-        String[] splitString;
 
 
     }

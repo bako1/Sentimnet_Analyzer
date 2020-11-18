@@ -8,7 +8,8 @@ public class PipeLine {
         private static Properties properties;
         private static StanfordCoreNLP stanfordCoreNLP;
         //ssplit for sentence recognition
-        private static String propertiesName = "tokenize, ssplit ,pos,lemma, ner,parse,sentiment";
+    //pos,ner,lemma,
+        private static String propertiesName = "tokenize, ssplit ,parse,sentiment";
 
         private PipeLine(){
 
@@ -22,9 +23,7 @@ public class PipeLine {
         //else return the existing object so that we get only one object
         //is typical singleton design pattern
         public static StanfordCoreNLP getPipeLine(){
-            if(stanfordCoreNLP == null){
-                stanfordCoreNLP = new StanfordCoreNLP(properties);
-            }
+            if(stanfordCoreNLP == null) stanfordCoreNLP = new StanfordCoreNLP(properties);
             return stanfordCoreNLP;
         }
     }

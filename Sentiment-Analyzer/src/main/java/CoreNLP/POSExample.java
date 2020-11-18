@@ -11,7 +11,7 @@ import java.util.List;
 public class POSExample {
     public static void main(String[] args) {
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
-        String text = "Hey! Abdi ABdi Bako. I anm student, husband and father of two beautiful children";
+        String text = "Hey! Abdi ABdi Bako. I am student, husband and father of two beautiful children";
         CoreDocument coreDocument = new CoreDocument(text);
         stanfordCoreNLP.annotate(coreDocument);
         List<CoreLabel>coreLabelList = coreDocument.tokens();
