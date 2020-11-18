@@ -1,5 +1,6 @@
 package IMT3281;
 
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,8 +15,6 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
-
-
     public static void main(String[] args) {
         launch();
 
@@ -23,13 +22,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         Parent root = FXMLLoader.load(getClass().getResource("primary.fxml"));
         stage.setTitle("Sentiment Analyzer");
         stage.setScene(new Scene(root, 600, 450));
         stage.getIcons().add(new Image(App.class.getResourceAsStream("sentiment.png")));
         stage.show();
-
-
     }
 }

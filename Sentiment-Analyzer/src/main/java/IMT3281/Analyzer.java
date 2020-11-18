@@ -1,9 +1,14 @@
 package IMT3281;
 
+import edu.stanford.nlp.ie.util.RelationTriple;
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreSentence;
+import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import javafx.application.Platform;
+import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
+import edu.stanford.nlp.util.CoreMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -24,7 +29,7 @@ import java.net.URL;
 
 import java.util.*;
 
-public class SingleFileController extends PrimaryController implements Initializable {
+public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
     public TableView<Table> tableView;
@@ -40,7 +45,7 @@ public class SingleFileController extends PrimaryController implements Initializ
     public TableColumn<Table, String> sentence;
     @FXML
     private  AnchorPane root;
-    public SingleFileController(){}
+    public Analyzer(){}
 
     @FXML
     public void onexit( ) {
@@ -82,26 +87,35 @@ public class SingleFileController extends PrimaryController implements Initializ
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
 
-        CoreDocument coreDocument;
+        Annotation doc;
         Table table;
 
-        HashMap<String, String>listHashMap = readFiles.readFiles(file);
+        HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
 
         for(Map.Entry<String, String>read : listHashMap.entrySet()) { // For every file
             String text = read.getValue();
-            coreDocument = new CoreDocument(text);
-            stanfordCoreNLP.annotate(coreDocument);
-            List<CoreSentence> sentenceList = coreDocument.sentences();
-            for (CoreSentence sentence : sentenceList) { // For every sentence
-                String sentiment = sentence.sentiment();
-                table = new Table(read.getKey(), sentence.toString(), "***må jobbes", sentiment, 0);
+            doc = new Annotation(text);
+            stanfordCoreNLP.annotate(doc);
+            for (CoreMap sentence : doc.get(CoreAnnotations.SentencesAnnotation.class)) { // For every sentence
+                String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+                String subject = "No subject or unknown";
+                Collection<RelationTriple> triples =
+                        sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
+                Iterator <RelationTriple> it = triples.iterator();
+
+                if (it.hasNext()) {
+                    subject = it.next().subjectGloss();
+                }
+
+                //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
+                table = new Table(read.getKey(), sentence.toString(), subject, sentiment, 0);
                 tableObservableList.add(table);
             }
         }
         return tableObservableList;
     }
 @FXML
-    public void browseFiles() throws IOException { multipleFileChooser();}
+    public void browseFiles() throws IOException { FileChooser();}
 
     @FXML
     private void usage() throws IOException {

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ReadFiles {
+    private List<String> sentence;
 
     public ReadFiles() {
     }
@@ -25,21 +26,19 @@ public class ReadFiles {
     /**
      * @return returns HashMap with fileName being key, and lists of sentences as value.
      */
-    public HashMap<String, String> readTextFile(File file) {
-        HashMap<String, String> fileAndLinesMap = new HashMap<>();
+    public int readTextFile(File file, HashMap<String, String> map) {
         try {
             //reads all lines in the file
             String contents = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-            System.out.println(contents);
-            fileAndLinesMap.put(file.toPath().toFile().getName(), contents);
+            map.put(file.toPath().toFile().getName(), contents);
         } catch (IOException e) {
             e.printStackTrace();
+            return 1;
         }
-        return fileAndLinesMap;
+        return 0;
     }
 
-    public HashMap<String, String> readDocsFile(File file) {
-        HashMap<String, String> allLinesAndFileMap = new HashMap<>();
+    public int readDocsFile(File file, HashMap<String, String> map) {
         try {
             FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
 
@@ -47,16 +46,16 @@ public class ReadFiles {
 
             WordExtractor wordExtractor = new WordExtractor(doc);
 
-            allLinesAndFileMap.put(file.getName(), wordExtractor.getText());
+            map.put(file.getName(), wordExtractor.getText());
             fileInputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return 1;
         }
-        return allLinesAndFileMap;
+        return 0;
     }
 
-    public HashMap<String, String> readCSVFile(File file) {
-        HashMap<String, String> csvFileAndLines = new HashMap<>();
+    public int readCSVFile(File file, HashMap<String, String> map) {
         String text = "";
         try {
             // Create object of filereader
@@ -83,28 +82,32 @@ public class ReadFiles {
                     text += ". ";
                 }
             }
-            csvFileAndLines.put(file.getName(), text);
+            map.put(file.getName(), text);
         } catch (Exception e) {
             e.printStackTrace();
+            return 1;
         }
-        return csvFileAndLines;
+        return 0;
     }
-    
 
-    public HashMap<String, String> readFiles(List<File> file) {
-        HashMap<String, String> fileAndLines = null;
+    public List<String> getSentence() {
+        return sentence;
+    }
 
-        for (File files : file) {
+    public HashMap<String, String> readFiles(List<File> files) {
+        HashMap<String, String> fileAndLines = new HashMap<String, String>();
+
+        for (File file : files) {
             //Check whether file is selected
             if (file != null) {
-                if (files.getPath().endsWith(".txt")) {
-                    fileAndLines = readTextFile(files);
+                if (file.getPath().endsWith(".txt")) {
+                    readTextFile(file, fileAndLines);
                 }
-                else if (files.getPath().endsWith(".doc")) {
-                    fileAndLines = readDocsFile(files);
+                else if (file.getPath().endsWith(".doc")) {
+                    readDocsFile(file, fileAndLines);
                 }
-                else if (files.getPath().endsWith(".csv")) {
-                    fileAndLines = readCSVFile(files);
+                else if (file.getPath().endsWith(".csv")) {
+                    readCSVFile(file, fileAndLines);
                 }
             }
         }

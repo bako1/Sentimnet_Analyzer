@@ -9,12 +9,12 @@ public class PipeLine {
         private static StanfordCoreNLP stanfordCoreNLP;
         //ssplit for sentence recognition
     //pos,ner,lemma,
-        private static String propertiesName = "tokenize, ssplit ,parse,sentiment";
+        private static String propertiesName = "tokenize, ssplit , pos, lemma, depparse, natlog, parse, sentiment, openie";
 
         private PipeLine(){
 
         }
-        //Load alla the annotator into the propery
+        //Load alla the annotator into the property
         static {
             properties = new Properties();
             properties.setProperty("annotators",propertiesName);
