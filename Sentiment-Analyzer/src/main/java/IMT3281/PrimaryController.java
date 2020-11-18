@@ -26,12 +26,6 @@ public class PrimaryController {
     @FXML
     public static List<File> file;
 
-    //private SentimentAnalyser sentenceDetection;
-
-    //public PrimaryController(){
-        ///sentenceDetection = new SentimentAnalyser();
-    //}
-
     @FXML
     public void FileChooser() throws IOException {
 
