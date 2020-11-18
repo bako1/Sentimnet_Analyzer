@@ -14,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -31,7 +33,7 @@ public class PrimaryController {
     //}
 
     @FXML
-    public void multipleFileChooser() throws IOException {
+    public void FileChooser() throws IOException {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Multiple file");
@@ -42,29 +44,17 @@ public class PrimaryController {
                 new FileChooser.ExtensionFilter("csv file", "*.csv"));
         file = fileChooser.showOpenMultipleDialog(stage);
 
-
-        Stage appStage = (Stage) root.getScene().getWindow();
-
         Parent parent;
         if (file != null) {
-            if ((long) file.size() > 1) {
-                parent = FXMLLoader.load(getClass().getResource("multipleFile.fxml"));
-                Scene scene = new Scene(parent);
-                appStage.setScene(scene);
-                appStage.show();
-
-            } else if ((long) file.size() == 1) {
-                parent = FXMLLoader.load(getClass().getResource("singleFile.fxml"));
-                Scene scene = new Scene(parent);
-                appStage.setScene(scene);
-                appStage.show();
-            }
-
-        }else {
+            parent = FXMLLoader.load(getClass().getResource("FileChooser.fxml"));
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("No file chosen");
             alert.show();}
-
     }
 
 @FXML
@@ -74,21 +64,14 @@ public class PrimaryController {
     }
     @FXML
     public void instruction() throws IOException {
-        FileReader fileReader=new FileReader("Sentiment-Analyzer/src/main/resources/IMT3281/instruction");
-        BufferedReader bufferedReader=new BufferedReader(fileReader);
-        List<String>sentences = new ArrayList<>();
-        String words;
-        String str = "";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("IMT3281/instruction.txt").getFile());
+
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
         textArea.setEditable(false);
-        while ((words = bufferedReader.readLine()) != null) {
-            sentences.add(words);
-
-
-            str+= " "+words+"\n";
-            textArea.setText(str);
-        }
+        String contents = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+        textArea.setText(contents);
 
         Stage newStage = new Stage();
         Scene scene = new Scene(textArea,400,200);
@@ -96,8 +79,4 @@ public class PrimaryController {
         newStage.setScene(scene);
         newStage.show();
 
-
-
-        bufferedReader.close();
-        fileReader.close();
     }}

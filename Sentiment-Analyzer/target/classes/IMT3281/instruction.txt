@@ -1,0 +1,3 @@
+How to use the App:
+
+Select a file using the "File => Browse files" Context menu. Be patient, and your words will show up in a table with the polarity attached.

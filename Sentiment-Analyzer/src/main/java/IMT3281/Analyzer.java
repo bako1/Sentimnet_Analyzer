@@ -1,12 +1,14 @@
 package IMT3281;
+
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.CoreSentence;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
-
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
@@ -19,9 +21,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class MultipleFileController extends PrimaryController implements Initializable {
+public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
     public TableView<Table> tableView;
@@ -36,26 +38,21 @@ public class MultipleFileController extends PrimaryController implements Initial
     @FXML
     public TableColumn<Table, String> sentence;
     @FXML
-    private AnchorPane root;
+    private  AnchorPane root;
+    public Analyzer(){}
 
-
-    public MultipleFileController(){
-        super();
-    }
     @FXML
     public void onexit( ) {
-        System.exit(0);
-    }
-    @FXML
+        onExit();}
+        @FXML
     public void goBackToHomePage() throws IOException {
-
-        Stage appStage;
-        Parent parent;
-        appStage = (Stage) root.getScene().getWindow();
-        parent = FXMLLoader.load(getClass().getResource("primary.fxml"));
-        Scene scene = new Scene(parent);
-        appStage.setScene(scene);
-        appStage.show();
+    Stage appStage;
+    Parent parent;
+    appStage = (Stage) root.getScene().getWindow();
+    parent = FXMLLoader.load(getClass().getResource("primary.fxml"));
+    Scene scene = new Scene(parent);
+    appStage.setScene(scene);
+    appStage.show();
     }
 
     /**
@@ -75,30 +72,35 @@ public class MultipleFileController extends PrimaryController implements Initial
         sentence.setCellValueFactory(new PropertyValueFactory<>("sentence"));
 
         tableView.setItems(getInfo());
-
     }
 
     private ObservableList<Table> getInfo() {
         ReadFiles readFiles = new ReadFiles();
-
+        StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
-        //SentimentAnalyser sentimentAnalyser = new SentimentAnalyser();
-      //  sentimentAnalyser.sentenceRecognizer(readFiles.readFiles(file));
-       // Table table = new Table(sentimentAnalyser.getFileName(),sentimentAnalyser.getProcessedSentences(),sentimentAnalyser.getSubject(),sentimentAnalyser.getPolarity(),sentimentAnalyser.getOccurrence());
-        //for(String s : table.getProcessedSentence())
-        // table.setSentence(s);
-      //  tableObservableList.add(table);
 
-        //DoubleBinding usedWidth = fileName.widthProperty().add(subject.widthProperty()).add(occurrence.widthProperty());
+        CoreDocument coreDocument;
+        Table table;
 
-//        sentence.prefWidthProperty().bind(tableView.widthProperty().subtract(usedWidth));
+        HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
+
+        for(Map.Entry<String, String>read : listHashMap.entrySet()) { // For every file
+            String text = read.getValue();
+            coreDocument = new CoreDocument(text);
+            stanfordCoreNLP.annotate(coreDocument);
+            List<CoreSentence> sentenceList = coreDocument.sentences();
+            for (CoreSentence sentence : sentenceList) { // For every sentence
+                String sentiment = sentence.sentiment();
+                System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment); // Console version of output, for debugging
+                table = new Table(read.getKey(), sentence.toString(), "***må jobbes", sentiment, 0);
+                tableObservableList.add(table);
+            }
+        }
         return tableObservableList;
     }
-    @FXML
-    public void browseFiles() throws IOException {
-        multipleFileChooser();
+@FXML
+    public void browseFiles() throws IOException { FileChooser();}
 
-    }
     @FXML
     private void usage() throws IOException {
         instruction();
