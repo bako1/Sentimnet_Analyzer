@@ -72,40 +72,33 @@ public class SingleFileController extends PrimaryController implements Initializ
         sentence.setCellValueFactory(new PropertyValueFactory<>("sentence"));
 
         tableView.setItems(getInfo());
-
     }
 
     private ObservableList<Table> getInfo() {
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
-        CoreDocument coreDocument;
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
+
+        CoreDocument coreDocument;
         Table table;
+
         HashMap<String, List>listHashMap = readFiles.readFiles(file);
-        for(Map.Entry<String,List>read : listHashMap.entrySet()) {
+
+        for(Map.Entry<String,List>read : listHashMap.entrySet()) { // For every file
             String text = read.getValue().toString();
             coreDocument = new CoreDocument(text);
             stanfordCoreNLP.annotate(coreDocument);
             List<CoreSentence> sentenceList = coreDocument.sentences();
-            for (CoreSentence wholeSentence : sentenceList) {
-                coreDocument = new CoreDocument(wholeSentence.toString());
-                stanfordCoreNLP.annotate(coreDocument);
-                //Get the sentence from the text/or paragraph
-                List<CoreSentence> coreSentences = coreDocument.sentences();
-                for (CoreSentence sentence : coreSentences) {
-                    String sentiment = sentence.sentiment();
-                    table = new Table(read.getKey(), wholeSentence.toString(), "***må jobbes", sentiment, 0);
-                    tableObservableList.add(table);
-                }
-                //processedSentences.add(sentence.toString());
+            for (CoreSentence sentence : sentenceList) { // For every sentence
+                String sentiment = sentence.sentiment();
+                table = new Table(read.getKey(), sentence.toString(), "***må jobbes", sentiment, 0);
+                tableObservableList.add(table);
             }
         }
         return tableObservableList;
     }
 @FXML
-    public void browseFiles() throws IOException { multipleFileChooser();
-
-    }
+    public void browseFiles() throws IOException { multipleFileChooser();}
 
     @FXML
     private void usage() throws IOException {
