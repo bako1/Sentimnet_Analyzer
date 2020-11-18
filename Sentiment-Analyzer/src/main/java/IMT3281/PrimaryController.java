@@ -62,6 +62,18 @@ public class PrimaryController {
 
     System.exit(0);
     }
+    Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                instruction();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        }
+    };
+
     @FXML
     public void instruction() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -74,9 +86,9 @@ public class PrimaryController {
         textArea.setText(contents);
 
         Stage newStage = new Stage();
-        Scene scene = new Scene(textArea,400,200);
+        Scene scene = new Scene(textArea, 400, 200);
         newStage.setTitle("Instructions");
         newStage.setScene(scene);
         newStage.show();
-
-    }}
+    }
+}
