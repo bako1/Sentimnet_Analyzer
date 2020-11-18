@@ -83,10 +83,10 @@ public class SingleFileController extends PrimaryController implements Initializ
         CoreDocument coreDocument;
         Table table;
 
-        HashMap<String, List>listHashMap = readFiles.readFiles(file);
+        HashMap<String, String>listHashMap = readFiles.readFiles(file);
 
-        for(Map.Entry<String,List>read : listHashMap.entrySet()) { // For every file
-            String text = read.getValue().toString();
+        for(Map.Entry<String, String>read : listHashMap.entrySet()) { // For every file
+            String text = read.getValue();
             coreDocument = new CoreDocument(text);
             stanfordCoreNLP.annotate(coreDocument);
             List<CoreSentence> sentenceList = coreDocument.sentences();
