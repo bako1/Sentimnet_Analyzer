@@ -42,29 +42,22 @@ public class PrimaryController {
                 new FileChooser.ExtensionFilter("csv file", "*.csv"));
         file = fileChooser.showOpenMultipleDialog(stage);
 
-
-        Stage appStage = (Stage) root.getScene().getWindow();
-
         Parent parent;
         if (file != null) {
-            if ((long) file.size() > 1) {
-                parent = FXMLLoader.load(getClass().getResource("multipleFile.fxml"));
-                Scene scene = new Scene(parent);
-                appStage.setScene(scene);
-                appStage.show();
-
-            } else if ((long) file.size() == 1) {
+            if ((long) file.size() == 1) {
                 parent = FXMLLoader.load(getClass().getResource("singleFile.fxml"));
-                Scene scene = new Scene(parent);
-                appStage.setScene(scene);
-                appStage.show();
-            }
 
-        }else {
+            } else {
+                parent = FXMLLoader.load(getClass().getResource("multipleFile.fxml"));
+            }
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("No file chosen");
             alert.show();}
-
     }
 
 @FXML
@@ -74,7 +67,10 @@ public class PrimaryController {
     }
     @FXML
     public void instruction() throws IOException {
-        FileReader fileReader=new FileReader("Sentiment-Analyzer/src/main/resources/IMT3281/instruction");
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("IMT3281/instruction.txt").getFile());
+
+        FileReader fileReader=new FileReader(file);
         BufferedReader bufferedReader=new BufferedReader(fileReader);
         List<String>sentences = new ArrayList<>();
         String words;
