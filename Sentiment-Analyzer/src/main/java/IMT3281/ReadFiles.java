@@ -105,7 +105,6 @@ public class ReadFiles {
         HashMap<String, List> fileAndLines = null;
 
         for (File files : file) {
-            List<String> listsOfLines = new ArrayList<>();
             //Check whether file is selected
             if (file != null) {
 
@@ -113,13 +112,7 @@ public class ReadFiles {
                     fileAndLines = readCSVFile(files);
 
                 } else if (files.getPath().endsWith(".txt")) {
-                    //HashMap<String, List> strings = readTextFile(file);
                     fileAndLines = readTextFile(files);
-                    //for (Map.Entry<String, List> maps : strings.entrySet())
-                    //System.out.println(maps.getKey() + ": " + maps.getValue());
-                    // SentimentAnalyser sentenceDetection = new SentimentAnalyser();
-                    // sentenceDetection.sentenceRecognizer(strings);}
-                    // fileAndLines = strings;
                 } else if (files.getPath().endsWith(".doc")) {
                     fileAndLines = readDocsFile(files);
 
