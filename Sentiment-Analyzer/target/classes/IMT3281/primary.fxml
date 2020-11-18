@@ -23,7 +23,7 @@
                         <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
                        <SeparatorMenuItem mnemonicParsing="false" />
-                       <MenuItem fx:id="toExit" mnemonicParsing="true" onAction="#onExit" text="Exit">
+                       <MenuItem fx:id="toExit" onAction="#onExit" text="Exit">
                            <accelerator>
                                <KeyCodeCombination alt="ANY" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
