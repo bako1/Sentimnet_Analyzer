@@ -18,12 +18,13 @@ public class Table {
         this.processedSentence = processedSentence;
     }
 
-    public Table(String fileName, String subject, String polarity, int occurrence) {
+    public Table(String fileName, String sentence, String subject, String polarity, int occurrence) {
 
         this.fileName = fileName;
         this.subject = subject;
         this.polarity = polarity;
         this.occurrence = occurrence;
+        this.sentence = sentence;
 
     }
 

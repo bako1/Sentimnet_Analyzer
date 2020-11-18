@@ -1,3 +1,4 @@
+/*
 package IMT3281;
 
 
@@ -31,9 +32,9 @@ public class SentimentAnalyser {
     }
 
 
-    public void sentimentAnalysis() {
+    public HashMap<String,String> sentimentAnalysis(String sentences) {
         stanfordCoreNLP = PipeLine.getPipeLine();
-        String text = processedSentences.toString();
+        String text = sentences;
         coreDocument = new CoreDocument(text);
         stanfordCoreNLP.annotate(coreDocument);
         //Get the sentence from the text/or paragraph
@@ -47,6 +48,7 @@ public class SentimentAnalyser {
         //for (Map.Entry<String, String> stringStringEntry : sentencePolarityMap.entrySet()) {
 
         //}
+        return sentencePolarityMap;
 
     }
 
@@ -104,7 +106,8 @@ public class SentimentAnalyser {
     }
 
     //splits sentences
-    public void sentenceRecognizer(HashMap<String, List> input) {
+    public HashMap<String,String> sentenceRecognizer(HashMap<String, List> input) {
+        HashMap<String,String> stringStringHashMap = new HashMap<>();
         String text;
         if (input != null) {
             for (Map.Entry<String, List> listEntry : input.entrySet()) {
@@ -116,9 +119,13 @@ public class SentimentAnalyser {
                 List<CoreSentence> sentenceList = coreDocument.sentences();
                 for (CoreSentence sentence : sentenceList)
                     processedSentences.add(sentence.toString());
+                stringStringHashMap.put(getFileName(),sentence);
                 setSentence(sentence);
+                sentimentAnalysis(sentence);
             }
 
         }
+        return stringStringHashMap;
     }
 }
+*/

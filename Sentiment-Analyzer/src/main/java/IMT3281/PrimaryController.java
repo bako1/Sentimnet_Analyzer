@@ -24,11 +24,11 @@ public class PrimaryController {
     @FXML
     public static List<File> file;
 
-    private SentimentAnalyser sentenceDetection;
+    //private SentimentAnalyser sentenceDetection;
 
-    public PrimaryController(){
-        sentenceDetection = new SentimentAnalyser();
-    }
+    //public PrimaryController(){
+        ///sentenceDetection = new SentimentAnalyser();
+    //}
 
     @FXML
     public void multipleFileChooser() throws IOException {
@@ -54,7 +54,6 @@ public class PrimaryController {
                 appStage.show();
 
             } else if ((long) file.size() == 1) {
-                System.out.println(sentenceDetection.getFileName());
                 parent = FXMLLoader.load(getClass().getResource("singleFile.fxml"));
                 Scene scene = new Scene(parent);
                 appStage.setScene(scene);
@@ -90,8 +89,7 @@ public class PrimaryController {
             str+= " "+words+"\n";
             textArea.setText(str);
         }
-        for (String s:sentences){
-            System.out.println(s);}
+
         Stage newStage = new Stage();
         Scene scene = new Scene(textArea,400,200);
         newStage.setTitle("Instructions");

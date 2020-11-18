@@ -1,6 +1,8 @@
 package IMT3281;
 
-import javafx.beans.binding.DoubleBinding;
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.CoreSentence;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -19,7 +21,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class SingleFileController extends PrimaryController implements Initializable {
 
@@ -75,21 +77,33 @@ public class SingleFileController extends PrimaryController implements Initializ
 
     private ObservableList<Table> getInfo() {
         ReadFiles readFiles = new ReadFiles();
-
+        StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
+        CoreDocument coreDocument;
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
-        SentimentAnalyser sentimentAnalyser = new SentimentAnalyser();
-        sentimentAnalyser.sentenceRecognizer(readFiles.readFiles(file));
-        Table table = new Table(sentimentAnalyser.getFileName(),sentimentAnalyser.getSubject(),sentimentAnalyser.getPolarity(),sentimentAnalyser.getOccurrence());
-        //for(String s : table.getProcessedSentence())
-           // table.setSentence(s);
-        tableObservableList.add(table);
-        DoubleBinding usedWidth = fileName.widthProperty().add(subject.widthProperty()).add(occurrence.widthProperty());
-
-        sentence.prefWidthProperty().bind(tableView.widthProperty().subtract(usedWidth));        return tableObservableList;
+        Table table;
+        HashMap<String, List>listHashMap = readFiles.readFiles(file);
+        for(Map.Entry<String,List>read : listHashMap.entrySet()) {
+            String text = read.getValue().toString();
+            coreDocument = new CoreDocument(text);
+            stanfordCoreNLP.annotate(coreDocument);
+            List<CoreSentence> sentenceList = coreDocument.sentences();
+            for (CoreSentence wholeSentence : sentenceList) {
+                coreDocument = new CoreDocument(wholeSentence.toString());
+                stanfordCoreNLP.annotate(coreDocument);
+                //Get the sentence from the text/or paragraph
+                List<CoreSentence> coreSentences = coreDocument.sentences();
+                for (CoreSentence sentence : coreSentences) {
+                    String sentiment = sentence.sentiment();
+                    table = new Table(read.getKey(), wholeSentence.toString(), "***må jobbes", sentiment, 0);
+                    tableObservableList.add(table);
+                }
+                //processedSentences.add(sentence.toString());
+            }
+        }
+        return tableObservableList;
     }
 @FXML
-    public void browseFiles() throws IOException {
-        multipleFileChooser();
+    public void browseFiles() throws IOException { multipleFileChooser();
 
     }
 

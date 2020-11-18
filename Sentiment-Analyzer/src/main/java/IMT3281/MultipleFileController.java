@@ -82,12 +82,13 @@ public class MultipleFileController extends PrimaryController implements Initial
         ReadFiles readFiles = new ReadFiles();
 
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
-        SentimentAnalyser sentimentAnalyser = new SentimentAnalyser();
-        sentimentAnalyser.sentenceRecognizer(readFiles.readFiles(file));
-        Table table = new Table(sentimentAnalyser.getFileName(),sentimentAnalyser.getSubject(),sentimentAnalyser.getPolarity(),sentimentAnalyser.getOccurrence());
+        //SentimentAnalyser sentimentAnalyser = new SentimentAnalyser();
+      //  sentimentAnalyser.sentenceRecognizer(readFiles.readFiles(file));
+       // Table table = new Table(sentimentAnalyser.getFileName(),sentimentAnalyser.getProcessedSentences(),sentimentAnalyser.getSubject(),sentimentAnalyser.getPolarity(),sentimentAnalyser.getOccurrence());
         //for(String s : table.getProcessedSentence())
         // table.setSentence(s);
-        tableObservableList.add(table);
+      //  tableObservableList.add(table);
+
         //DoubleBinding usedWidth = fileName.widthProperty().add(subject.widthProperty()).add(occurrence.widthProperty());
 
 //        sentence.prefWidthProperty().bind(tableView.widthProperty().subtract(usedWidth));
