@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -27,6 +28,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 
 public class Analyzer extends PrimaryController implements Initializable {
@@ -84,6 +87,7 @@ public class Analyzer extends PrimaryController implements Initializable {
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
+        Statistics stats = new Statistics();
 
         Annotation doc;
         Table table;
@@ -105,11 +109,25 @@ public class Analyzer extends PrimaryController implements Initializable {
                     subject = it.next().subjectGloss();
                 }
 
+                stats.addStat(sentiment);
+                stats.addSentence();
+
                 //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
                 table = new Table(read.getKey(), sentence.toString(), subject, sentiment, 0);
                 tableObservableList.add(table);
             }
         }
+        TextArea textArea = new TextArea();
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        String contents = "Positive:\t" + stats.getPos() + "\nNegative:\t" + stats.getNeg() + "\nNeutral:\t" + stats.getNeu() + "\nSentences:\t" + stats.getSentence();
+        textArea.setText(contents);
+
+        Stage newStage = new Stage();
+        Scene scene = new Scene(textArea, 300, 100);
+        newStage.setTitle("Statistics");
+        newStage.setScene(scene);
+        newStage.show();
         return tableObservableList;
     }
 @FXML
