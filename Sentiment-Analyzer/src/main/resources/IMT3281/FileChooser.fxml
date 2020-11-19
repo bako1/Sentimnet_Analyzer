@@ -4,8 +4,7 @@
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="root" prefHeight="252.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.2"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.Analyzer">
+<AnchorPane fx:id="root" prefHeight="252.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.Analyzer">
 
       <MenuBar prefHeight="25.0" prefWidth="1000.0">
 
@@ -56,16 +55,23 @@
 
       </MenuBar>
 
-      <TableView fx:id="tableView" layoutX="5.0" layoutY="27.0" prefHeight="363.0" prefWidth="1000.0">
+      <TableView fx:id="tableView" layoutX="5.0" layoutY="27.0" prefHeight="363.0" prefWidth="1000.0" >
         <columns>
-          <TableColumn fx:id="fileName" prefWidth="75.0" text="File Name" />
+          <!--<TableColumn fx:id="fileName" prefWidth="75.0" text="File Name" />-->
             <TableColumn fx:id="sentence" maxWidth="400" minWidth="300" prefWidth="400" text="Sentence" />
+            <!-- <TableColumn fx:id="occurrence" prefWidth="75.0" text="Occurrence" /> -->
+            <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
             <TableColumn fx:id="polarity" prefWidth="75.0" text="Polarity" />
-            <TableColumn fx:id="occurrence" prefWidth="75.0" text="Occurrence" />
-          <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+   <TableView fx:id="tableViewM" layoutX="4.0" layoutY="28.0" prefHeight="349.0" prefWidth="1000.0">
+     <columns>
+       <TableColumn fx:id="fileNameM" prefWidth="75.0" text="File Name" />
+       <TableColumn fx:id="subjectM" prefWidth="75.0" text="Subject" />
+         <TableColumn fx:id="polarityM" prefWidth="75.0" text="Polarity" />
+     </columns>
+   </TableView>
 </AnchorPane>
