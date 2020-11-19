@@ -7,54 +7,43 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="600.0" style="-fx-background-color: #ccddee; -fx-background-image: url(IMT3281/sentiment.png); -fx-background-repeat: repeat;"
             xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.PrimaryController">
-   <children>
-
-       <MenuBar layoutX="-3.0" layoutY="-7.0" prefHeight="25.0" prefWidth="1070.0" style="-fx-background-color: white;">
-           <menus>
-               <Menu mnemonicParsing="false" text="File">
-                   <items>
-                       <!--<MenuItem fx:id="browseSingleFile" onAction="#fileChooser" text="Browse Single File">
+    <MenuBar layoutX="-3.0" layoutY="-7.0" prefHeight="25.0" prefWidth="1070.0" style="-fx-background-color: white;">
+        <Menu mnemonicParsing="false" text="File">
+            <!--<MenuItem fx:id="browseSingleFile" onAction="#fileChooser" text="Browse Single File">
                      <accelerator>
                         <KeyCodeCombination alt="ANY" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>-->
-                       <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#FileChooser" text="Browse files">
-                     <accelerator>
-                        <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-                       <SeparatorMenuItem mnemonicParsing="false" />
-                       <MenuItem fx:id="toExit" onAction="#onExit" text="Exit">
-                           <accelerator>
-                               <KeyCodeCombination alt="ANY" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                       </MenuItem>
-                   </items>
-               <accelerator>
-                  <KeyCodeCombination alt="ANY" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
-               </accelerator>
-               </Menu>
-               <Menu text="Help">
-                   <items>
-                       <MenuItem fx:id="usage" onAction="#instruction" text="Usage">
-                           <accelerator>
-                               <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-                   </items>
-               </Menu>
-               <Menu text="About">
-                   <items>
-                       <MenuItem text="Author" />
-                       <MenuItem text="Version" />
-                       <SeparatorMenuItem />
-                       <MenuItem text="Contact" />
-                   </items>
-               </Menu>
-           </menus>
-         <effect>
+            <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#FileChooser" text="Browse files">
+                <accelerator>
+                    <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                </accelerator></MenuItem>
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="toExit" onAction="#onExit" text="Exit">
+                <accelerator>
+                    <KeyCodeCombination alt="ANY" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                </accelerator>
+            </MenuItem>
+            <accelerator>
+                <KeyCodeCombination alt="ANY" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
+            </accelerator>
+        </Menu>
+        <Menu text="Help">
+            <MenuItem fx:id="usage" onAction="#instruction" text="Usage">
+                <accelerator>
+                    <KeyCodeCombination alt="ANY" code="F1" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                </accelerator>
+            </MenuItem>
+        </Menu>
+        <Menu text="About">
+            <MenuItem text="Author" />
+            <MenuItem text="Version" />
+            <SeparatorMenuItem />
+            <MenuItem text="Contact" />
+        </Menu>
+        <effect>
             <Blend />
-         </effect>
-       </MenuBar>
-      <VBox layoutY="25.0" prefHeight="411.0" prefWidth="600.0" />
-   </children>
+        </effect>
+    </MenuBar>
+    <VBox layoutY="25.0" prefHeight="411.0" prefWidth="600.0" />
 </AnchorPane>
