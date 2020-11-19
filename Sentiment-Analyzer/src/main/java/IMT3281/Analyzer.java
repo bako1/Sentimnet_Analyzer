@@ -12,6 +12,7 @@ import edu.stanford.nlp.util.CoreMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,7 +24,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 
 import java.io.File;
@@ -51,6 +54,8 @@ public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
     private  AnchorPane root;
+    @FXML
+    public static File whereToSave;
 
     public Analyzer(){}
 
@@ -190,4 +195,7 @@ public class Analyzer extends PrimaryController implements Initializable {
     }
 
 
+    public void whereToSave() {
+
+    }
 }
