@@ -3,9 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" prefHeight="252.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.Analyzer">
+<AnchorPane fx:id="root" prefHeight="252.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.Analyzer">
 
       <MenuBar prefHeight="25.0" prefWidth="1000.0">
 
@@ -55,46 +54,24 @@
             </Menu>
 
       </MenuBar>
-   <StackPane layoutX="5.0" layoutY="27.0" prefHeight="32.0" prefWidth="1000.0">
-      <children>
-         <TextFlow prefHeight="32.0" prefWidth="807.0">
-            <children>
-               <Label fx:id="selectedFileLabel" prefHeight="31.0" prefWidth="232.0" text="Selcted File: ">
-                  <font>
-                     <Font size="14.0" />
-                  </font>
-               </Label>
-               <Label fx:id="positiveOccurrence" prefHeight="32.0" prefWidth="187.0" text="Positive Occurrence" />
-               <Label fx:id="negativeOccurrence" layoutX="242.0" layoutY="12.0" prefHeight="32.0" prefWidth="187.0" text="Negative Occerrunce" />
-               <Label fx:id="neutralOccurrence" layoutX="429.0" layoutY="12.0" prefHeight="32.0" prefWidth="187.0" text="Neutral Occerrunce" />
-            </children>
-         </TextFlow>
-      </children>
-   </StackPane>
 
-      <TableView fx:id="tableView" layoutX="5.0" layoutY="61.0" prefHeight="363.0" prefWidth="1000.0">
+      <TableView fx:id="tableView" layoutX="5.0" layoutY="27.0" prefHeight="363.0" prefWidth="1000.0" >
         <columns>
-<!--
-          <TableColumn fx:id="fileName" prefWidth="75.0" text="File Name" />
--->
+          <!--<TableColumn fx:id="fileName" prefWidth="75.0" text="File Name" />-->
             <TableColumn fx:id="sentence" maxWidth="400" minWidth="300" prefWidth="400" text="Sentence" />
-            <TableColumn fx:id="polarity" prefWidth="75.0" text="Polarity">
-         </TableColumn>
-          <!--  <TableColumn fx:id="occurrence" prefWidth="75.0" text="Occurrence" /> -->
-          <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
+            <!-- <TableColumn fx:id="occurrence" prefWidth="75.0" text="Occurrence" /> -->
+            <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
+            <TableColumn fx:id="polarity" prefWidth="75.0" text="Polarity" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-   <TableView fx:id="tableViewDoc" layoutY="57.0" prefHeight="377.0" prefWidth="1015.0">
-      <columns>
-         <TableColumn fx:id="fileName" maxWidth="400" minWidth="300" prefWidth="400" text="File Name" />
-         <TableColumn fx:id="subjectPerFile" prefWidth="75.0" text="Subject per file" />
-         <TableColumn fx:id="polarityPerFile" prefWidth="75.0" text="Polarity per file" />
-      </columns>
-      <columnResizePolicy>
-         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-      </columnResizePolicy>
+   <TableView fx:id="tableViewM" layoutX="4.0" layoutY="28.0" prefHeight="349.0" prefWidth="1000.0">
+     <columns>
+       <TableColumn fx:id="fileNameM" prefWidth="75.0" text="File Name" />
+       <TableColumn fx:id="subjectM" prefWidth="75.0" text="Subject" />
+         <TableColumn fx:id="polarityM" prefWidth="75.0" text="Polarity" />
+     </columns>
    </TableView>
 </AnchorPane>
