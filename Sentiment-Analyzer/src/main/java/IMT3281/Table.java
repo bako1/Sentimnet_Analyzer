@@ -3,10 +3,9 @@ package IMT3281;
 import java.util.ArrayList;
 
 public class Table {
-    private String fileName ;
+    private String target;
     private String subject;
     private String polarity;
-    private int occurrence;
     private String sentence;
     private ArrayList<String> processedSentence;
 
@@ -17,24 +16,14 @@ public class Table {
     public void setProcessedSentence(ArrayList<String> processedSentence) {
         this.processedSentence = processedSentence;
     }
-    public Table(String fileName,String subject,String polarity){
-        this.fileName = fileName;
+    public Table(String target,String subject,String polarity){
+        this.target = target;
         this.subject = subject;
         this.polarity = polarity;
     }
 
-    public Table(String fileName, String sentence, String subject, String polarity, int occurrence) {
-
-        this.fileName = fileName;
-        this.subject = subject;
-        this.polarity = polarity;
-        this.occurrence = occurrence;
-        this.sentence = sentence;
-
-    }
-
-    public String getFileName() {
-        return fileName;
+    public String getTarget() {
+        return target;
     }
 
     public String getSubject() {
@@ -45,21 +34,15 @@ public class Table {
         return polarity;
     }
 
-    public int getOccurrence() {
-        return occurrence;
-    }
-
-
     public String getSentence() {
         return sentence;
     }
-
 
     public void setSentence(String sentence) {
         this.sentence = sentence;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setTarget(String fileName) {
+        this.target = fileName;
     }
 }

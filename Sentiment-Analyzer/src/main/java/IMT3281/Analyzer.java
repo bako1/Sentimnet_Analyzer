@@ -37,27 +37,16 @@ public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
     public TableView<Table> tableView;
-   // @FXML
-    //public TableColumn<Table,String> fileName;
     @FXML
     public TableColumn<Table,String> polarity;
-   //7 @FXML
-    //public TableColumn<Table,Integer> occurrence;
     @FXML
     public TableColumn <Table,String> subject;
     @FXML
-    public TableColumn<Table, String> sentence;
-    @FXML
-    public TableView tableViewM;
-    @FXML
-    public TableColumn<Table,String> subjectM;
-    @FXML
-    public TableColumn<Table,String> polarityM;
-    @FXML
-    public TableColumn<Table,String> fileNameM;
+    public TableColumn<Table, String> target;
 
     @FXML
     private  AnchorPane root;
+
     public Analyzer(){}
 
     @FXML
@@ -84,37 +73,25 @@ public class Analyzer extends PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (file.size() == 1) {
-            //fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
             subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
-           // occurrence.setCellValueFactory(new PropertyValueFactory<>("occurrence"));
             polarity.setCellValueFactory(new PropertyValueFactory<>("polarity"));
-            sentence.setCellValueFactory(new PropertyValueFactory<>("sentence"));
+            target.setCellValueFactory(new PropertyValueFactory<>("target"));
             tableView.setItems(getInfo());
             tableView.setVisible(true);
-            tableViewM.setVisible(false);
-        } else if (file.size() > 1) {
-
-            System.out.println(" ************ Multiple file selected *** ");
-            //for multiple files
-            fileNameM.setCellValueFactory(new PropertyValueFactory<>("fileName"));
-            subjectM.setCellValueFactory(new PropertyValueFactory<>("subject"));
-            polarityM.setCellValueFactory(new PropertyValueFactory<>("polarity"));
-            tableView.setVisible(false);
-            tableViewM.setVisible(true);
-            tableViewM.setItems(getInfo());
-
-        }
     }
     private ObservableList<Table> getInfo() {
-        int pos, neg ,neu;
-            pos=neg=neu=0;
-         String sentiment="";
-        String overAllPol = "";
+//        int pos, neg ,neu;
+//            pos=neg=neu=0;
+
+
+//        String overAllPol = "";
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
         Statistics stats = new Statistics();
+        String sentiment;
+        String text;
+        String subject;
 
         Annotation doc;
         Table table;
@@ -123,14 +100,15 @@ public class Analyzer extends PrimaryController implements Initializable {
         HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
 
         for(Map.Entry<String, String>read : listHashMap.entrySet()) { // For every file
-            String text = read.getValue();
+            text = read.getValue();
             doc = new Annotation(text);
             stanfordCoreNLP.annotate(doc);
             for (CoreMap sentence : doc.get(CoreAnnotations.SentencesAnnotation.class)) { // For every sentence
+
                 sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
-                String subject = "No subject or unknown";
-                Collection<RelationTriple> triples =
-                        sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
+                subject = "No subject or unknown";
+
+                Collection<RelationTriple> triples = sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
                 Iterator <RelationTriple> it = triples.iterator();
 
                 if (it.hasNext()) {
@@ -138,43 +116,39 @@ public class Analyzer extends PrimaryController implements Initializable {
                 }
 
                 stats.addStat(sentiment);
+                System.out.println("Sentiment from for: " + sentiment);
                 stats.addSentence();
-                if(file.size()==1){
+
                 //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
-                table = new Table(read.getKey(), sentence.toString(), subject, sentiment, 0);
-                 //fileExporter = new FileExporter(sentence.toString(), subject, sentiment,);
-                tableObservableList.add(table);
+
+                if(file.size()==1){
+                    System.out.println(sentence.toString());
+                    table = new Table(sentence.toString(), subject, sentiment);
+                    //fileExporter = new FileExporter(sentence.toString(), subject, sentiment,);
+                    tableObservableList.add(table);
                 }
-                if(file.size()>1){
-                    Statistics statistics = new Statistics();
-
-                    if(sentiment.equalsIgnoreCase("positive"))
-                    {
-                        statistics.addStat("Positive");
-                        pos = statistics.getPos();
-                    }
-                    else if(sentiment.equalsIgnoreCase("negative"))
-                    {
-                        statistics.addStat("negative");
-                        neg = statistics.getNeg();
-                    }
-                    else if(sentiment.equalsIgnoreCase("negative"))
-                    {
-                        statistics.addStat("neutral");
-                        neu = statistics.getNeu();
-                    }
-
-
-                }
-                overAllPol =  overAllPolarity(pos,neg,neu);
-
             }
 
             if(file.size() > 1) {
-                Table table1 = new Table(read.getKey(), " må jobbes", overAllPol);
-                tableObservableList.add(table1);
+                table = new Table(read.getKey(), " må jobbes", stats.getMax());
+                tableObservableList.add(table);
+                stats.reset();
             }
         }
+
+        showStatistics(stats);
+
+        return tableObservableList;
+    }
+@FXML
+    public void browseFiles() throws IOException { FileChooser();}
+
+    @FXML
+    private void usage() throws IOException {
+        instruction();
+    }
+
+    private void showStatistics(Statistics stats) {
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
         textArea.setEditable(false);
@@ -189,15 +163,8 @@ public class Analyzer extends PrimaryController implements Initializable {
         newStage.setTitle("Statistics");
         newStage.setScene(scene);
         newStage.show();
-        return tableObservableList;
     }
-@FXML
-    public void browseFiles() throws IOException { FileChooser();}
 
-    @FXML
-    private void usage() throws IOException {
-        instruction();
-    }
     private String overAllPolarity(int pos, int neg, int neu){
         String overAllPolarity="";
         if(pos>neg && pos>neu)

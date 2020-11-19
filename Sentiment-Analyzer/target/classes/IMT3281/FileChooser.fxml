@@ -57,21 +57,12 @@
 
       <TableView fx:id="tableView" layoutX="5.0" layoutY="27.0" prefHeight="363.0" prefWidth="1000.0" >
         <columns>
-          <!--<TableColumn fx:id="fileName" prefWidth="75.0" text="File Name" />-->
-            <TableColumn fx:id="sentence" maxWidth="400" minWidth="300" prefWidth="400" text="Sentence" />
-            <!-- <TableColumn fx:id="occurrence" prefWidth="75.0" text="Occurrence" /> -->
-            <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
-            <TableColumn fx:id="polarity" prefWidth="75.0" text="Polarity" />
+              <TableColumn fx:id="target" prefWidth="75.0" text="Target" />
+              <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
+              <TableColumn fx:id="polarity" prefWidth="75.0" text="Polarity" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-   <TableView fx:id="tableViewM" layoutX="4.0" layoutY="28.0" prefHeight="349.0" prefWidth="1000.0">
-     <columns>
-       <TableColumn fx:id="fileNameM" prefWidth="75.0" text="File Name" />
-       <TableColumn fx:id="subjectM" prefWidth="75.0" text="Subject" />
-         <TableColumn fx:id="polarityM" prefWidth="75.0" text="Polarity" />
-     </columns>
-   </TableView>
 </AnchorPane>
