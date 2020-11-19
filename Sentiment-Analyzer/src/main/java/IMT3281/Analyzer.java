@@ -99,7 +99,7 @@ public class Analyzer extends PrimaryController implements Initializable {
         String subject;
 
         Annotation doc;
-        Table table = null;
+        Table table;
         FileExporter fileExporter;
 
         HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
@@ -138,11 +138,11 @@ public class Analyzer extends PrimaryController implements Initializable {
                 fileStats.reset();
             }
         }
-
+        test++;
         showStatistics(stats, fileStats);
         return tableObservableList;
     }
-@FXML
+    @FXML
     public void browseFiles() throws IOException { FileChooser();}
 
     @FXML
@@ -179,17 +179,5 @@ public class Analyzer extends PrimaryController implements Initializable {
         subjects.setText(subjContent);
 
     }
-
-    private String overAllPolarity(int pos, int neg, int neu){
-        String overAllPolarity="";
-        if(pos>neg && pos>neu)
-            overAllPolarity = "positive";
-        else if(neg>pos&&neg>neu)
-            overAllPolarity = "negative";
-        else
-            overAllPolarity = "neutral";
-        return overAllPolarity;
-    }
-
 
 }

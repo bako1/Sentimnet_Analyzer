@@ -38,7 +38,7 @@
                 </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="exportToCSV" text="Export to CSV" />
+            <MenuItem fx:id="exportToCSV" text="Export to CSV" onAction="#export" />
         </Menu>
 
     </MenuBar>

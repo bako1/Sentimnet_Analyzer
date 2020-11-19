@@ -19,10 +19,8 @@ public class FileExporter {
     public void writeXMLFile() throws FileNotFoundException {
         FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-
     }
     public void writeCSVFile(){
-
 
     }
 }
