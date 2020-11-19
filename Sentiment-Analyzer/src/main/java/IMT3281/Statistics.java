@@ -9,6 +9,8 @@ public class Statistics {
     private static String neg = "Negative";
     private static String neu = "Neutral";
 
+    private HashMap<String, ArrayList<String>> subjects = new HashMap<String, ArrayList<String>>();
+
     private int sentences = 0;
 
     public Statistics(){
@@ -45,6 +47,35 @@ public class Statistics {
             list[i] = 0;
         }
     }
+
+    public void addSubject(String file, String subject) {
+        if (subjects.containsKey(file)) {
+            subjects.get(file).add(subject);
+        }
+        else {
+            ArrayList<String> arr = new ArrayList<>();
+            arr.add(subject);
+            subjects.put(file, arr);
+        }
+    }
+
+    public String getSubjects() {
+        String subs = "";
+        for (Map.Entry<String, ArrayList<String>> entry : subjects.entrySet()) {
+            subs += entry.getKey();
+            subs += ": ";
+            Iterator it = entry.getValue().iterator();
+            while (it.hasNext()) {
+                subs += it.next();
+                if (it.hasNext()) {
+                    subs += ", ";
+                }
+            }
+            subs += "\n";
+        }
+        return subs;
+    }
+
 
     public void addSentence() {
         this.sentences++;
