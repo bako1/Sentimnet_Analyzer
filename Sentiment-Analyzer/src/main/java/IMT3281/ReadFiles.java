@@ -11,6 +11,7 @@ import org.apache.poi.hwpf.extractor.WordExtractor;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,23 +26,19 @@ public class ReadFiles {
     /**
      * @return returns HashMap with fileName being key, and lists of sentences as value.
      */
-    public HashMap<String, List> readTextFile(File file) {
-        HashMap<String, List> fileAndLinesMap = new HashMap<>();
-        List allLines;
+    public int readTextFile(File file, HashMap<String, String> map) {
         try {
             //reads all lines in the file
-            allLines = Files.readAllLines(file.toPath());
-            fileAndLinesMap.put(file.toPath().toFile().getName(), allLines);
+            String contents = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+            map.put(file.toPath().toFile().getName(), contents);
         } catch (IOException e) {
             e.printStackTrace();
-
+            return 1;
         }
-        return fileAndLinesMap;
+        return 0;
     }
 
-    public HashMap<String, List> readDocsFile(File file) {
-        HashMap<String, List> allLinesAndFileMap = new HashMap<>();
-        List<String> linesList = new ArrayList<>();
+    public int readDocsFile(File file, HashMap<String, String> map) {
         try {
             FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
 
@@ -49,22 +46,17 @@ public class ReadFiles {
 
             WordExtractor wordExtractor = new WordExtractor(doc);
 
-            String[] paragraphs = wordExtractor.getParagraphText();
-
-            for (String paragraph : paragraphs) {
-                linesList.add(paragraph);
-                allLinesAndFileMap.put(file.getName(), linesList);
-            }
+            map.put(file.getName(), wordExtractor.getText());
             fileInputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return 1;
         }
-        return allLinesAndFileMap;
+        return 0;
     }
 
-    public HashMap<String, List> readCSVFile(File file) {
-        HashMap<String, List> csvFileAndLines = new HashMap<>();
-        List<String> linesList = new ArrayList<>();
+    public int readCSVFile(File file, HashMap<String, String> map) {
+        String text = "";
         try {
             // Create object of filereader
             // class with csv file as parameter.
@@ -72,7 +64,7 @@ public class ReadFiles {
 
             // create csvParser object with
             // custom seperator semi-colon
-            CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
+            CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
 
             // create csvReader object with
             // parameter filereader and parser
@@ -83,51 +75,41 @@ public class ReadFiles {
             // Read all data at once
             List<String[]> allData = csvReader.readAll();
 
-            // print Data
+             // print Data
             for (String[] row : allData) {
                 for (String cell : row) {
-                    linesList.add(cell);
-                    csvFileAndLines.put(file.getName(), linesList);
+                    text += cell;
+                    text += ". ";
                 }
-                System.out.println();
             }
+            map.put(file.getName(), text);
         } catch (Exception e) {
             e.printStackTrace();
+            return 1;
         }
-        return csvFileAndLines;
+        return 0;
     }
 
     public List<String> getSentence() {
         return sentence;
     }
 
-    public HashMap<String, List> readFiles(List<File> file) {
-        HashMap<String, List> fileAndLines = null;
+    public HashMap<String, String> readFiles(List<File> files) {
+        HashMap<String, String> fileAndLines = new HashMap<String, String>();
 
-        for (File files : file) {
-            List<String> listsOfLines = new ArrayList<>();
+        for (File file : files) {
             //Check whether file is selected
             if (file != null) {
-
-                if (files.getAbsolutePath().endsWith(".csv")) {
-                    fileAndLines = readCSVFile(files);
-
-                } else if (files.getPath().endsWith(".txt")) {
-                    //HashMap<String, List> strings = readTextFile(file);
-                    fileAndLines = readTextFile(files);
-                    //for (Map.Entry<String, List> maps : strings.entrySet())
-                    //System.out.println(maps.getKey() + ": " + maps.getValue());
-                    // SentimentAnalyser sentenceDetection = new SentimentAnalyser();
-                    // sentenceDetection.sentenceRecognizer(strings);}
-                    // fileAndLines = strings;
-                } else if (files.getPath().endsWith(".doc")) {
-                    fileAndLines = readDocsFile(files);
-
+                if (file.getPath().endsWith(".txt")) {
+                    readTextFile(file, fileAndLines);
+                }
+                else if (file.getPath().endsWith(".doc")) {
+                    readDocsFile(file, fileAndLines);
+                }
+                else if (file.getPath().endsWith(".csv")) {
+                    readCSVFile(file, fileAndLines);
                 }
             }
-
-
-
         }
         return fileAndLines;
     }

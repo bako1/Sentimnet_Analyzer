@@ -1,8 +1,14 @@
 package IMT3281;
 
+import edu.stanford.nlp.ie.util.RelationTriple;
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreSentence;
+import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
+import edu.stanford.nlp.util.CoreMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -21,9 +28,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 
-public class SingleFileController extends PrimaryController implements Initializable {
+public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
     public TableView<Table> tableView;
@@ -39,7 +48,7 @@ public class SingleFileController extends PrimaryController implements Initializ
     public TableColumn<Table, String> sentence;
     @FXML
     private  AnchorPane root;
-    public SingleFileController(){}
+    public Analyzer(){}
 
     @FXML
     public void onexit( ) {
@@ -72,40 +81,57 @@ public class SingleFileController extends PrimaryController implements Initializ
         sentence.setCellValueFactory(new PropertyValueFactory<>("sentence"));
 
         tableView.setItems(getInfo());
-
     }
 
     private ObservableList<Table> getInfo() {
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
-        CoreDocument coreDocument;
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
+        Statistics stats = new Statistics();
+
+        Annotation doc;
         Table table;
-        HashMap<String, List>listHashMap = readFiles.readFiles(file);
-        for(Map.Entry<String,List>read : listHashMap.entrySet()) {
-            String text = read.getValue().toString();
-            coreDocument = new CoreDocument(text);
-            stanfordCoreNLP.annotate(coreDocument);
-            List<CoreSentence> sentenceList = coreDocument.sentences();
-            for (CoreSentence wholeSentence : sentenceList) {
-                coreDocument = new CoreDocument(wholeSentence.toString());
-                stanfordCoreNLP.annotate(coreDocument);
-                //Get the sentence from the text/or paragraph
-                List<CoreSentence> coreSentences = coreDocument.sentences();
-                for (CoreSentence sentence : coreSentences) {
-                    String sentiment = sentence.sentiment();
-                    table = new Table(read.getKey(), wholeSentence.toString(), "***må jobbes", sentiment, 0);
-                    tableObservableList.add(table);
+
+        HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
+
+        for(Map.Entry<String, String>read : listHashMap.entrySet()) { // For every file
+            String text = read.getValue();
+            doc = new Annotation(text);
+            stanfordCoreNLP.annotate(doc);
+            for (CoreMap sentence : doc.get(CoreAnnotations.SentencesAnnotation.class)) { // For every sentence
+                String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+                String subject = "No subject or unknown";
+                Collection<RelationTriple> triples =
+                        sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
+                Iterator <RelationTriple> it = triples.iterator();
+
+                if (it.hasNext()) {
+                    subject = it.next().subjectGloss();
                 }
-                //processedSentences.add(sentence.toString());
+
+                stats.addStat(sentiment);
+                stats.addSentence();
+
+                //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
+                table = new Table(read.getKey(), sentence.toString(), subject, sentiment, 0);
+                tableObservableList.add(table);
             }
         }
+        TextArea textArea = new TextArea();
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        String contents = "Positive:\t" + stats.getPos() + "\nNegative:\t" + stats.getNeg() + "\nNeutral:\t" + stats.getNeu() + "\nSentences:\t" + stats.getSentence();
+        textArea.setText(contents);
+
+        Stage newStage = new Stage();
+        Scene scene = new Scene(textArea, 300, 100);
+        newStage.setTitle("Statistics");
+        newStage.setScene(scene);
+        newStage.show();
         return tableObservableList;
     }
 @FXML
-    public void browseFiles() throws IOException { multipleFileChooser();
-
-    }
+    public void browseFiles() throws IOException { FileChooser();}
 
     @FXML
     private void usage() throws IOException {
