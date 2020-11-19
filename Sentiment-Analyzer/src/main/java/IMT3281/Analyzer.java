@@ -47,7 +47,8 @@ public class Analyzer extends PrimaryController implements Initializable {
     @FXML
     public static MenuItem exportToXML;
     public MenuItem exportToCSV;
-    public TextArea textArea;
+    public TextArea stat;
+    public TextArea subjects;
 
     @FXML
     private  AnchorPane root;
@@ -121,6 +122,7 @@ public class Analyzer extends PrimaryController implements Initializable {
 
                 if (it.hasNext()) {
                     subject = it.next().subjectGloss();
+                    stats.addSubject(read.getKey(), subject);
                 }
 
                 stats.addStat(sentiment);
@@ -155,14 +157,21 @@ public class Analyzer extends PrimaryController implements Initializable {
     }
 
     private void showStatistics(Statistics stats) {
-        String contents = "\t\t\t Statistics\n\n"+
+        String statContent = "\t\t\t Statistics\n\n"+
                 "\t\tFiles Selected:\t"+file.size()+
                 "\n\t\tPositive:\t\t" + stats.getPos() + "\n\t\tNegative:\t\t"
                 + stats.getNeg() + "\n\t\tNeutral:\t\t" + stats.getNeu()
                 + "\n\t\tSentences:\t" + stats.getSentence();
-        textArea.setText(contents);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+        String subjContent = "\t\t\t Subjects\n\n" + stats.getSubjects();
+
+        stat.setEditable(false);
+        stat.setWrapText(true);
+        stat.setText(statContent);
+
+        subjects.setEditable(false);
+        subjects.setWrapText(true);
+        subjects.setText(subjContent);
+
     }
 
     private String overAllPolarity(int pos, int neg, int neu){
