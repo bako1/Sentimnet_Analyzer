@@ -26,8 +26,28 @@ public class Statistics {
         return list[2];
     }
 
-    public int getMax() {
-        return Collections.max(Arrays.asList(list));
+    public String getMax() {
+        int max = Collections.max(Arrays.asList(list));
+        System.out.println("max from stats: " + max);
+        if (list[0] == max) {
+            System.out.println("pos from stats: " + pos);
+            return pos;
+        }
+        else if(list[1] == max) {
+            System.out.println("neg from stats: " + neg);
+            return neg;
+        }
+        else {
+            System.out.println("neu from stats: "  + neu);
+            return neu;
+        }
+    }
+
+    public void reset() {
+        this.sentences = 0;
+        for (int i = 0; i < 3; i++) {
+            list[i] = 0;
+        }
     }
 
     public void addSentence() {
@@ -38,7 +58,7 @@ public class Statistics {
         return this.sentences;
     }
 
-    public void addStat(String str) {
+    public int addStat(String str) {
         if (str.equalsIgnoreCase(pos)) {
             list[0]++;
         } else if (str.equalsIgnoreCase(neg)) {
@@ -46,8 +66,8 @@ public class Statistics {
         } else if (str.equalsIgnoreCase(neu)) {
             list[2]++;
         } else {
-      //      return 1;
+            return 1;
         }
-       // return 0;
+        return 0;
     }
 }
