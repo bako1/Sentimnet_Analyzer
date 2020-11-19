@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
@@ -32,7 +33,7 @@
             <MenuItem mnemonicParsing="false" text="Version" />
         </Menu>
         <Menu mnemonicParsing="false" text="Export">
-            <MenuItem  text="Export to XML" onAction="#whereToSave">
+            <MenuItem onAction="#whereToSave" text="Export to XML">
                 <accelerator>
                     <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
                 </accelerator>
@@ -48,7 +49,7 @@
         </columnConstraints><rowConstraints>
         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
     </rowConstraints>
-        <TableView fx:id="tableView" prefHeight="363.0" prefWidth="1000.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+        <TableView fx:id="tableView" prefHeight="363.0" prefWidth="1000.0" style="-fx-background-color: orange;" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="target" prefWidth="75.0" text="Target" />
                 <TableColumn fx:id="subject" prefWidth="75.0" text="Subject" />
@@ -60,6 +61,9 @@
         </TableView>
     </GridPane>
     <HBox layoutX="6.0" layoutY="399.0" prefHeight="139.0" prefWidth="1000.0">
-        <TextArea fx:id="textArea" prefHeight="139.0" prefWidth="999.0" />
+        <TextArea fx:id="textArea" prefHeight="139.0" prefWidth="999.0" style="-fx-background-color: golden;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></TextArea>
     </HBox>
 </AnchorPane>
