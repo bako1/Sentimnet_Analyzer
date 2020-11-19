@@ -88,11 +88,7 @@ public class Analyzer extends PrimaryController implements Initializable {
             tableView.setVisible(true);
     }
     private ObservableList<Table> getInfo() {
-//        int pos, neg ,neu;
-//            pos=neg=neu=0;
 
-
-//        String overAllPol = "";
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
@@ -129,8 +125,6 @@ public class Analyzer extends PrimaryController implements Initializable {
                 fileStats.addStat(sentiment);
                 stats.addSentence();
 
-                //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
-
                 if(file.size()==1){
                     table = new Table(sentence.toString(), subject, sentiment);
                     //fileExporter = new FileExporter(sentence.toString(), subject, sentiment,);
@@ -145,7 +139,7 @@ public class Analyzer extends PrimaryController implements Initializable {
             }
         }
 
-        showStatistics(stats);
+        showStatistics(stats, fileStats);
         return tableObservableList;
     }
 @FXML
@@ -156,12 +150,24 @@ public class Analyzer extends PrimaryController implements Initializable {
         instruction();
     }
 
-    private void showStatistics(Statistics stats) {
-        String statContent = "\t\t\t Statistics\n\n"+
-                "\t\tFiles Selected:\t"+file.size()+
-                "\n\t\tPositive:\t\t" + stats.getPos() + "\n\t\tNegative:\t\t"
-                + stats.getNeg() + "\n\t\tNeutral:\t\t" + stats.getNeu()
-                + "\n\t\tSentences:\t" + stats.getSentence();
+    private void showStatistics(Statistics stats, Statistics fileStats) {
+        String statContent = "";
+        if (file.size() > 1) {
+            statContent +=  "\t\t\t Statistics\n\n"+
+                            "\tFiles Selected:\t " + file.size() + "\tPer-file" +
+                            "\n\tPositive:\t\t" + stats.getPos() + "\t   " + fileStats.getFilePos() +
+                            "\n\tNegative:\t\t" + stats.getNeg() + "\t   " + fileStats.getFileNeg() +
+                            "\n\tNeutral:\t\t" + stats.getNeu() + "\t   " + fileStats.getFileNeu() +
+                            "\n\tSentences:\t" + stats.getSentence();
+        }
+        else {
+            statContent += "\t\t\t Statistics\n\n"+
+                    "\t\tFiles Selected:\t "+file.size()+
+                    "\n\t\tPositive:\t\t" + stats.getPos() + "\n\t\tNegative:\t\t"
+                    + stats.getNeg() + "\n\t\tNeutral:\t\t" + stats.getNeu() +
+                    "\n\t\tSentences:\t" + stats.getSentence();
+        }
+
         String subjContent = "\t\t\t Subjects\n\n" + stats.getSubjects();
 
         stat.setEditable(false);
