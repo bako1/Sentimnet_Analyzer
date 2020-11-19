@@ -38,16 +38,16 @@ public class Statistics {
         return this.sentences;
     }
 
-    public int addStat(String str) {
-        if (str.equals(pos)) {
+    public void addStat(String str) {
+        if (str.equalsIgnoreCase(pos)) {
             list[0]++;
-        } else if (str.equals(neg)) {
+        } else if (str.equalsIgnoreCase(neg)) {
             list[1]++;
-        } else if (str.equals(neu)) {
+        } else if (str.equalsIgnoreCase(neu)) {
             list[2]++;
         } else {
-            return 1;
+      //      return 1;
         }
-        return 0;
+       // return 0;
     }
 }

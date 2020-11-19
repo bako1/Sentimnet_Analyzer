@@ -17,6 +17,11 @@ public class Table {
     public void setProcessedSentence(ArrayList<String> processedSentence) {
         this.processedSentence = processedSentence;
     }
+    public Table(String fileName,String subject,String polarity){
+        this.fileName = fileName;
+        this.subject = subject;
+        this.polarity = polarity;
+    }
 
     public Table(String fileName, String sentence, String subject, String polarity, int occurrence) {
 
