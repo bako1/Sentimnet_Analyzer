@@ -13,11 +13,6 @@
            <menus>
                <Menu mnemonicParsing="false" text="File">
                    <items>
-                       <!--<MenuItem fx:id="browseSingleFile" onAction="#fileChooser" text="Browse Single File">
-                     <accelerator>
-                        <KeyCodeCombination alt="ANY" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>-->
                        <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#FileChooser" text="Browse files">
                      <accelerator>
                         <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />

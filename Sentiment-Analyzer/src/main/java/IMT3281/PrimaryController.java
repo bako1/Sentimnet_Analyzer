@@ -25,6 +25,12 @@ public class PrimaryController {
     private AnchorPane root;
     @FXML
     public static List<File> file;
+    public int test = 0;
+
+
+
+    public PrimaryController() {
+    }
 
     @FXML
     public void FileChooser() throws IOException {
