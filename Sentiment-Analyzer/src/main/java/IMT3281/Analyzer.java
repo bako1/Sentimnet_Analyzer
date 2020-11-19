@@ -17,11 +17,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.omg.PortableServer.POA;
 
 
 import java.io.IOException;
@@ -33,16 +35,34 @@ public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
     public TableView<Table> tableView;
-    @FXML
-    public TableColumn<Table,String> fileName;
+   /* @FXML
+    public TableColumn<Table,String> fileName;*/
     @FXML
     public TableColumn<Table,String> polarity;
-    @FXML
-    public TableColumn<Table,Integer> occurrence;
+   /* @FXML
+    public TableColumn<Table,Integer> occurrence;*/
     @FXML
     public TableColumn <Table,String> subject;
     @FXML
     public TableColumn<Table, String> sentence;
+    @FXML
+    public Label label;
+    @FXML
+    public TableView<Table> tableViewDoc;
+    @FXML
+    public TableColumn <Table,String>fileName;
+    @FXML
+    public TableColumn <Table,String>subjectPerFile;
+    @FXML
+    public TableColumn<Table,String> polarityPerFile;
+    @FXML
+    public Label positiveOccurrence;
+    @FXML
+    public Label negativeOccurrence;
+    @FXML
+    public Label neutralOccurrence;
+    @FXML
+    public Label selectedFileLabel;
     @FXML
     private  AnchorPane root;
     public Analyzer(){}
@@ -71,16 +91,29 @@ public class Analyzer extends PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
 
-        subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
-        occurrence.setCellValueFactory(new PropertyValueFactory<>("occurrence"));
-        polarity.setCellValueFactory(new PropertyValueFactory<>("polarity"));
-        sentence.setCellValueFactory(new PropertyValueFactory<>("sentence"));
-        sentence.setResizable(true);
-        tableView.isResizable();
-        tableView.setItems(getInfo());
+
+        if(file.size()==1){
+            //fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+            subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
+            //occurrence.setCellValueFactory(new PropertyValueFactory<>("occurrence"));
+            polarity.setCellValueFactory(new PropertyValueFactory<>("polarity"));
+            sentence.setCellValueFactory(new PropertyValueFactory<>("sentence"));
+
+            tableView.setVisible(true);
+            tableViewDoc.setVisible(false);
+            //Second Table
+
+        }
+        else if(file.size()>1){
+            fileName.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+            subjectPerFile.setCellValueFactory(new PropertyValueFactory<>("subjectPerFile"));
+            polarityPerFile.setCellValueFactory(new PropertyValueFactory<>("subjectPerFile"));
+            tableView.setVisible(false);
+            tableViewDoc.setVisible(true);
+            tableViewDoc.setItems(getInfo());}
     }
+
 
     private ObservableList<Table> getInfo() {
         ReadFiles readFiles = new ReadFiles();
@@ -108,8 +141,15 @@ public class Analyzer extends PrimaryController implements Initializable {
                 }
 
                 //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
+                if(file.size()==1){
                 table = new Table(read.getKey(), sentence.toString(), subject, sentiment, 0);
                 tableObservableList.add(table);
+                }
+               else if(file.size()>1){
+                   Table table1 = new Table(read.getKey(),sentiment,subject,sentiment,10);
+                    tableObservableList.add(table1);
+
+                }
             }
         }
         return tableObservableList;
