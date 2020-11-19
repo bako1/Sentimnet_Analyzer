@@ -28,17 +28,13 @@ public class Statistics {
 
     public String getMax() {
         int max = Collections.max(Arrays.asList(list));
-        System.out.println("max from stats: " + max);
         if (list[0] == max) {
-            System.out.println("pos from stats: " + pos);
             return pos;
         }
         else if(list[1] == max) {
-            System.out.println("neg from stats: " + neg);
             return neg;
         }
         else {
-            System.out.println("neu from stats: "  + neu);
             return neu;
         }
     }

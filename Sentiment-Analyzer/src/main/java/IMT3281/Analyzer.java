@@ -57,7 +57,9 @@ public class Analyzer extends PrimaryController implements Initializable {
     @FXML
     public static File whereToSave;
 
-    public Analyzer(){}
+    public Analyzer(){
+
+    }
 
     @FXML
     public void onexit( ) {
@@ -99,6 +101,7 @@ public class Analyzer extends PrimaryController implements Initializable {
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
         Statistics stats = new Statistics();
+        Statistics fileStats = new Statistics();
         String sentiment;
         String text;
         String subject;
@@ -126,13 +129,12 @@ public class Analyzer extends PrimaryController implements Initializable {
                 }
 
                 stats.addStat(sentiment);
-                System.out.println("Sentiment from for: " + sentiment);
+                fileStats.addStat(sentiment);
                 stats.addSentence();
 
                 //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
 
                 if(file.size()==1){
-                    System.out.println(sentence.toString());
                     table = new Table(sentence.toString(), subject, sentiment);
                     //fileExporter = new FileExporter(sentence.toString(), subject, sentiment,);
                     tableObservableList.add(table);
@@ -140,22 +142,13 @@ public class Analyzer extends PrimaryController implements Initializable {
             }
 
             if(file.size() > 1) {
-                table = new Table(read.getKey(), " må jobbes", stats.getMax());
+                table = new Table(read.getKey(), " må jobbes", fileStats.getMax());
                 tableObservableList.add(table);
-                stats.reset();
+                fileStats.reset();
             }
         }
 
-        //showStatistics(stats);
-
-        String contents = "\t\t\t\t\t\t\t Statistic\n\n"+
-                "\t\tFile Selected:\t"+file.size()+
-                "\n\t\tPositive:\t" + stats.getPos() + "\n\t\tNegative:\t"
-                        + stats.getNeg() + "\n\t\tNeutral:\t" + stats.getNeu()
-                        + "\n\t\tSentences:\t" + stats.getSentence();
-        textArea.setText(contents);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
+        showStatistics(stats);
         return tableObservableList;
     }
 @FXML
@@ -167,20 +160,14 @@ public class Analyzer extends PrimaryController implements Initializable {
     }
 
     private void showStatistics(Statistics stats) {
-        TextArea textArea = new TextArea();
-        textArea.setWrapText(true);
-        textArea.setEditable(false);
-        String contents =
-                "Positive:\t" + stats.getPos() + "\nNegative:\t"
-                        + stats.getNeg() + "\nNeutral:\t" + stats.getNeu()
-                        + "\nSentences:\t" + stats.getSentence();
+        String contents = "\t\t\t Statistics\n\n"+
+                "\t\tFiles Selected:\t"+file.size()+
+                "\n\t\tPositive:\t\t" + stats.getPos() + "\n\t\tNegative:\t\t"
+                + stats.getNeg() + "\n\t\tNeutral:\t\t" + stats.getNeu()
+                + "\n\t\tSentences:\t" + stats.getSentence();
         textArea.setText(contents);
-
-        Stage newStage = new Stage();
-        Scene scene = new Scene(textArea, 300, 100);
-        newStage.setTitle("Statistics");
-        newStage.setScene(scene);
-        newStage.show();
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
     }
 
     private String overAllPolarity(int pos, int neg, int neu){
