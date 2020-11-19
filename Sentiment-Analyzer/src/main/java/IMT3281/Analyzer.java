@@ -103,6 +103,7 @@ public class Analyzer extends PrimaryController implements Initializable {
             tableView.setVisible(false);
             tableViewM.setVisible(true);
             tableViewM.setItems(getInfo());
+
         }
     }
     private ObservableList<Table> getInfo() {
@@ -117,6 +118,7 @@ public class Analyzer extends PrimaryController implements Initializable {
 
         Annotation doc;
         Table table;
+        FileExporter fileExporter;
 
         HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
 
@@ -140,6 +142,7 @@ public class Analyzer extends PrimaryController implements Initializable {
                 if(file.size()==1){
                 //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
                 table = new Table(read.getKey(), sentence.toString(), subject, sentiment, 0);
+                 //fileExporter = new FileExporter(sentence.toString(), subject, sentiment,);
                 tableObservableList.add(table);
                 }
                 if(file.size()>1){
@@ -166,8 +169,11 @@ public class Analyzer extends PrimaryController implements Initializable {
                 overAllPol =  overAllPolarity(pos,neg,neu);
 
             }
-            Table table1 = new Table(read.getKey(), " må jobbes",overAllPol);
-            tableObservableList.add(table1);
+
+            if(file.size() > 1) {
+                Table table1 = new Table(read.getKey(), " må jobbes", overAllPol);
+                tableObservableList.add(table1);
+            }
         }
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
