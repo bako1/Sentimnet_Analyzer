@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -43,6 +44,10 @@ public class Analyzer extends PrimaryController implements Initializable {
     public TableColumn <Table,String> subject;
     @FXML
     public TableColumn<Table, String> target;
+    @FXML
+    public static MenuItem exportToXML;
+    public MenuItem exportToCSV;
+    public TextArea textArea;
 
     @FXML
     private  AnchorPane root;
@@ -94,7 +99,7 @@ public class Analyzer extends PrimaryController implements Initializable {
         String subject;
 
         Annotation doc;
-        Table table;
+        Table table = null;
         FileExporter fileExporter;
 
         HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
@@ -136,8 +141,16 @@ public class Analyzer extends PrimaryController implements Initializable {
             }
         }
 
-        showStatistics(stats);
+        //showStatistics(stats);
 
+        String contents = "\t\t\t\t\t\t\t Statistic\n\n"+
+                "\t\tFile Selected:\t"+file.size()+
+                "\n\t\tPositive:\t" + stats.getPos() + "\n\t\tNegative:\t"
+                        + stats.getNeg() + "\n\t\tNeutral:\t" + stats.getNeu()
+                        + "\n\t\tSentences:\t" + stats.getSentence();
+        textArea.setText(contents);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
         return tableObservableList;
     }
 @FXML
