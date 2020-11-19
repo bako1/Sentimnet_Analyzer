@@ -25,6 +25,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -108,6 +109,7 @@ public class Analyzer extends PrimaryController implements Initializable {
         int pos, neg ,neu;
             pos=neg=neu=0;
          String sentiment="";
+        String overAllPol = "";
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
@@ -140,31 +142,32 @@ public class Analyzer extends PrimaryController implements Initializable {
                 table = new Table(read.getKey(), sentence.toString(), subject, sentiment, 0);
                 tableObservableList.add(table);
                 }
+                if(file.size()>1){
+                    Statistics statistics = new Statistics();
+
+                    if(sentiment.equalsIgnoreCase("positive"))
+                    {
+                        statistics.addStat("Positive");
+                        pos = statistics.getPos();
+                    }
+                    else if(sentiment.equalsIgnoreCase("negative"))
+                    {
+                        statistics.addStat("negative");
+                        neg = statistics.getNeg();
+                    }
+                    else if(sentiment.equalsIgnoreCase("negative"))
+                    {
+                        statistics.addStat("neutral");
+                        neu = statistics.getNeu();
+                    }
+
+
+                }
+                overAllPol =  overAllPolarity(pos,neg,neu);
 
             }
-             if(file.size()>1){
-                Statistics statistics = new Statistics();
-
-                if(sentiment.equalsIgnoreCase("positive"))
-                {
-                    statistics.addStat("Positive");
-                    pos = statistics.getPos();
-                }
-                else if(sentiment.equalsIgnoreCase("negative"))
-                {
-                    statistics.addStat("negative");
-                    neg = statistics.getNeg();
-                }
-                else if(sentiment.equalsIgnoreCase("negative"))
-                {
-                    statistics.addStat("neutral");
-                    neu = statistics.getNeu();
-                }
-
-                String overAllPol =  overAllPolarity(pos,neg,neu);
-                Table table1 = new Table(read.getKey()," må jobbes",overAllPol);
-                tableObservableList.add(table1);
-            }
+            Table table1 = new Table(read.getKey(), " må jobbes",overAllPol);
+            tableObservableList.add(table1);
         }
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
@@ -199,5 +202,6 @@ public class Analyzer extends PrimaryController implements Initializable {
             overAllPolarity = "neutral";
         return overAllPolarity;
     }
+
 
 }
