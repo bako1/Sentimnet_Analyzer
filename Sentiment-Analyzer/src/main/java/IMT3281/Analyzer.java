@@ -41,9 +41,9 @@ public class Analyzer extends PrimaryController implements Initializable {
     @FXML
     public TableView<Table> tableView;
     @FXML
-    public TableColumn<Table,String> polarity;
+    public TableColumn<Table, String> polarity;
     @FXML
-    public TableColumn <Table,String> subject;
+    public TableColumn<Table, String> subject;
     @FXML
     public TableColumn<Table, String> target;
     @FXML
@@ -53,25 +53,27 @@ public class Analyzer extends PrimaryController implements Initializable {
     public TextArea subjects;
 
     @FXML
-    private  AnchorPane root;
-    private File whereToSave;
+    private AnchorPane root;
+    private File whereToSave = null;
 
-    public Analyzer(){
+    public Analyzer() {
 
     }
 
     @FXML
-    public void onexit( ) {
-        onExit();}
-        @FXML
+    public void onexit() {
+        onExit();
+    }
+
+    @FXML
     public void goBackToHomePage() throws IOException {
-    Stage appStage;
-    Parent parent;
-    appStage = (Stage) root.getScene().getWindow();
-    parent = FXMLLoader.load(getClass().getResource("primary.fxml"));
-    Scene scene = new Scene(parent);
-    appStage.setScene(scene);
-    appStage.show();
+        Stage appStage;
+        Parent parent;
+        appStage = (Stage) root.getScene().getWindow();
+        parent = FXMLLoader.load(getClass().getResource("primary.fxml"));
+        Scene scene = new Scene(parent);
+        appStage.setScene(scene);
+        appStage.show();
     }
 
     /**
@@ -84,12 +86,13 @@ public class Analyzer extends PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-            subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
-            polarity.setCellValueFactory(new PropertyValueFactory<>("polarity"));
-            target.setCellValueFactory(new PropertyValueFactory<>("target"));
-            tableView.setItems(getInfo());
-            tableView.setVisible(true);
+        subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        polarity.setCellValueFactory(new PropertyValueFactory<>("polarity"));
+        target.setCellValueFactory(new PropertyValueFactory<>("target"));
+        tableView.setItems(getInfo());
+        tableView.setVisible(true);
     }
+
     private ObservableList<Table> getInfo() {
 //        int pos, neg ,neu;
 //            pos=neg=neu=0;
@@ -98,7 +101,7 @@ public class Analyzer extends PrimaryController implements Initializable {
 //        String overAllPol = "";
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
-        ObservableList<Table>tableObservableList = FXCollections.observableArrayList();
+        ObservableList<Table> tableObservableList = FXCollections.observableArrayList();
         Statistics stats = new Statistics();
         Statistics fileStats = new Statistics();
         String sentiment;
@@ -109,9 +112,9 @@ public class Analyzer extends PrimaryController implements Initializable {
         Table table = null;
         FileExporter fileExporter;
 
-        HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
+        HashMap<String, String> listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
 
-        for(Map.Entry<String, String>read : listHashMap.entrySet()) { // For every file
+        for (Map.Entry<String, String> read : listHashMap.entrySet()) { // For every file
             text = read.getValue();
             doc = new Annotation(text);
             stanfordCoreNLP.annotate(doc);
@@ -121,7 +124,7 @@ public class Analyzer extends PrimaryController implements Initializable {
                 subject = "No subject or unknown";
 
                 Collection<RelationTriple> triples = sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
-                Iterator <RelationTriple> it = triples.iterator();
+                Iterator<RelationTriple> it = triples.iterator();
 
                 if (it.hasNext()) {
                     subject = it.next().subjectGloss();
@@ -134,14 +137,14 @@ public class Analyzer extends PrimaryController implements Initializable {
 
                 //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
 
-                if(file.size()==1){
+                if (file.size() == 1) {
                     table = new Table(sentence.toString(), subject, sentiment);
                     //fileExporter = new FileExporter(sentence.toString(), subject, sentiment,);
                     tableObservableList.add(table);
                 }
             }
 
-            if(file.size() > 1) {
+            if (file.size() > 1) {
                 table = new Table(read.getKey(), " må jobbes", fileStats.getMax());
                 tableObservableList.add(table);
                 fileStats.reset();
@@ -151,8 +154,11 @@ public class Analyzer extends PrimaryController implements Initializable {
         showStatistics(stats);
         return tableObservableList;
     }
-@FXML
-    public void browseFiles() throws IOException { FileChooser();}
+
+    @FXML
+    public void browseFiles() throws IOException {
+        FileChooser();
+    }
 
     @FXML
     private void usage() throws IOException {
@@ -160,8 +166,8 @@ public class Analyzer extends PrimaryController implements Initializable {
     }
 
     private void showStatistics(Statistics stats) {
-        String statContent = "\t\t\t Statistics\n\n"+
-                "\t\tFiles Selected:\t"+file.size()+
+        String statContent = "\t\t\t Statistics\n\n" +
+                "\t\tFiles Selected:\t" + file.size() +
                 "\n\t\tPositive:\t\t" + stats.getPos() + "\n\t\tNegative:\t\t"
                 + stats.getNeg() + "\n\t\tNeutral:\t\t" + stats.getNeu()
                 + "\n\t\tSentences:\t" + stats.getSentence();
@@ -177,19 +183,20 @@ public class Analyzer extends PrimaryController implements Initializable {
 
     }
 
-    private String overAllPolarity(int pos, int neg, int neu){
-        String overAllPolarity="";
-        if(pos>neg && pos>neu)
+    private String overAllPolarity(int pos, int neg, int neu) {
+        String overAllPolarity = "";
+        if (pos > neg && pos > neu)
             overAllPolarity = "positive";
-        else if(neg>pos&&neg>neu)
+        else if (neg > pos && neg > neu)
             overAllPolarity = "negative";
         else
             overAllPolarity = "neutral";
         return overAllPolarity;
     }
-@FXML
 
-    private void whereToSave()  {
+    @FXML
+
+    private void whereToSave() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File Dialog");
         fileChooser.setInitialFileName("sentiment");
@@ -198,35 +205,42 @@ public class Analyzer extends PrimaryController implements Initializable {
                 new FileChooser.ExtensionFilter("xml", "*.xml"),
                 new FileChooser.ExtensionFilter("csv file", "*.csv"));
         whereToSave = fileChooser.showSaveDialog(stage);
-        ArrayList<FileExporter>fileExporterArrayList = new ArrayList<>();
+        if (whereToSave != null) {
+            if (whereToSave.getAbsolutePath().endsWith(".xml")) {
+                writeXMLFile(whereToSave);
+            }else if(whereToSave.getAbsolutePath().endsWith(".csv")){
+
+            }
+
+        }else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("OBS! The File could not be saved");
+            alert.show();
+        }
+    }
+
+    private void writeXMLFile(File file) {
+
         FileExporter fileExporter;
         Table table;
-        for (int i = 0; i <tableView.getItems().size() ; i++) {
+        for (int i = 0; i < tableView.getItems().size(); i++) {
             table = tableView.getItems().get(i);
-            fileExporter = new FileExporter(table.getTarget(),table.getSubject(),table.getPolarity());
-            fileExporterArrayList.add(fileExporter);
-            for(FileExporter exporter: fileExporterArrayList)
-                writeXMLFile(exporter);
-        }
-
-}
-private void writeXMLFile(FileExporter fileExporter){
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(whereToSave,true);
-            if(whereToSave!=null){
-                XMLEncoder xmlEncoder = new XMLEncoder(fileOutputStream);
-                xmlEncoder.writeObject(fileExporter);
-                xmlEncoder.close();
-                fileOutputStream.close();
-            }else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("OBS! The File could not be saved");
+            fileExporter = new FileExporter(table.getTarget(), table.getSubject(), table.getPolarity());
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(file, true);
+                if (file != null) {
+                    XMLEncoder xmlEncoder = new XMLEncoder(fileOutputStream);
+                    xmlEncoder.writeObject(fileExporter);
+                    xmlEncoder.close();
+                    fileOutputStream.close();
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+            //   }
         }
+    }
+}
 
-}
-}
