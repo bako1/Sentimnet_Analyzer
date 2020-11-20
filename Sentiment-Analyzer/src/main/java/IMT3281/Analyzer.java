@@ -25,11 +25,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.beans.XMLEncoder;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 
 import java.nio.charset.StandardCharsets;
@@ -189,32 +189,30 @@ public class Analyzer extends PrimaryController implements Initializable {
     }
 @FXML
 
-    private void whereToSave() {
+    private void whereToSave()  {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File Dialog");
         fileChooser.setInitialFileName("sentiment");
-
         Stage stage = (Stage) root.getScene().getWindow();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("xml", "*.xml"),
                 new FileChooser.ExtensionFilter("csv file", "*.csv"));
         whereToSave = fileChooser.showSaveDialog(stage);
-
+        ArrayList<FileExporter>fileExporterArrayList = new ArrayList<>();
+        FileExporter fileExporter;
+        Table table;
         for (int i = 0; i <tableView.getItems().size() ; i++) {
-            FileExporter fileExporter = new FileExporter();
-            Table table;
             table = tableView.getItems().get(i);
-            fileExporter.setTarget(table.getTarget());
-            fileExporter.setSubject(table.getSubject());
-            fileExporter.setPolarity(table.getPolarity());
-            writeXMLFile(fileExporter);
+            fileExporter = new FileExporter(table.getTarget(),table.getSubject(),table.getPolarity());
+            fileExporterArrayList.add(fileExporter);
+            for(FileExporter exporter: fileExporterArrayList)
+                writeXMLFile(exporter);
         }
 
 }
 private void writeXMLFile(FileExporter fileExporter){
-
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(whereToSave);
+            FileOutputStream fileOutputStream = new FileOutputStream(whereToSave,true);
             if(whereToSave!=null){
                 XMLEncoder xmlEncoder = new XMLEncoder(fileOutputStream);
                 xmlEncoder.writeObject(fileExporter);
@@ -222,12 +220,13 @@ private void writeXMLFile(FileExporter fileExporter){
                 fileOutputStream.close();
             }else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("OBS! File could not be saved");
+                alert.setContentText("OBS! The File could not be saved");
             }
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
+
 }
 }

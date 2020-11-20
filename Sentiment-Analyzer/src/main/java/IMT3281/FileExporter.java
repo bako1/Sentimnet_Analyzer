@@ -9,8 +9,12 @@ public class FileExporter {
 
     public FileExporter(){
 
+    }
 
-
+    public FileExporter(String target, String subject, String polarity) {
+        this.target = target;
+        this.polarity = polarity;
+        this.subject = subject;
     }
 
     public void setTarget(String target) {
@@ -28,7 +32,6 @@ public class FileExporter {
     public String getTarget() {
         return target;
     }
-
     public String getPolarity() {
         return polarity;
     }
@@ -37,6 +40,8 @@ public class FileExporter {
         return subject;
     }
 
-}
+    }
+
+
 
 
