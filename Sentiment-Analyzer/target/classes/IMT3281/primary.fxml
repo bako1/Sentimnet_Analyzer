@@ -31,10 +31,10 @@
             </MenuItem>
         </Menu>
         <Menu text="About">
-            <MenuItem text="Author" />
-            <MenuItem text="Version" />
+            <MenuItem text="Author" onAction="#authorInfo"/>
+            <MenuItem text="Version" onAction="#versionInfo"/>
             <SeparatorMenuItem />
-            <MenuItem text="Contact" />
+            <MenuItem text="Contact" onAction="#contactInfo" />
         </Menu>
         <effect>
             <Blend />

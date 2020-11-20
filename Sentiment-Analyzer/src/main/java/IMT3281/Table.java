@@ -17,6 +17,10 @@ public class Table {
         this.processedSentence = processedSentence;
     }
     public Table(){}
+    public Table(String target, String polarity){
+        this.target = target;
+        this.polarity = polarity;
+    }
     public Table(String target,String subject,String polarity){
         this.target = target;
         this.subject = subject;

@@ -140,7 +140,7 @@ public class Analyzer extends PrimaryController implements Initializable {
             }
 
             if (file.size() > 1) {
-                table = new Table(read.getKey(), " må jobbes", fileStats.getMax());
+                table = new Table(read.getKey(), fileStats.getMax());
                 tableObservableList.add(table);
                 fileStats.reset();
             }
@@ -264,5 +264,6 @@ public class Analyzer extends PrimaryController implements Initializable {
         alert.show();
         return alert;
     }
+
 }
 

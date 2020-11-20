@@ -47,7 +47,7 @@ public class PrimaryController {
             stage.show();
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("No file chosen");
             alert.show();}
     }
@@ -85,5 +85,29 @@ public class PrimaryController {
         newStage.setTitle("Instructions");
         newStage.setScene(scene);
         newStage.show();
+    }
+
+    private Alert information(String info){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(info);
+        alert.show();
+        return alert;
+    }
+@FXML
+    public void authorInfo() {
+        String info = "Abdi Bako \n" +
+                " Amr Hamcho\n" +
+                "Eirik Tobiassen ";
+        information(info);
+    }
+    @FXML
+    public void contactInfo() {
+        String info = "students@ntnu: Gjøvik";
+        information(info);
+    }
+    @FXML
+    public void versionInfo() {
+        String info = "Version: 1.0.0";
+        information(info);
     }
 }
