@@ -164,16 +164,15 @@ public class Analyzer extends PrimaryController implements Initializable {
     private void showStatistics(Statistics stats, Statistics fileStats) {
         String statContent = "";
         if (file.size() > 1) {
-            statContent +=  "\t\tStatistics\n\n"+
+            statContent += "\t\tStatistics\n\n" +
                     "Files Selected:\t " + file.size() + "\n\tPer-sentence" + "\tPer-file" +
                     "\nPositive:\t\t" + stats.getPos() + "\t   " + fileStats.getFilePos() +
                     "\nNegative:\t\t" + stats.getNeg() + "\t   " + fileStats.getFileNeg() +
                     "\nNeutral:\t\t" + stats.getNeu() + "\t   " + fileStats.getFileNeu() +
                     "\n\nTotal sentences:\t" + stats.getSentence();
-        }
-        else {
-            statContent += "\t\t Statistics\n\n"+
-                    "\tFiles Selected:\t "+file.size()+
+        } else {
+            statContent += "\t\t Statistics\n\n" +
+                    "\tFiles Selected:\t " + file.size() +
                     "\n\tPositive:\t\t" + stats.getPos() + "\n\tNegative:\t\t"
                     + stats.getNeg() + "\n\tNeutral:\t\t" + stats.getNeu() +
                     "\n\tSentences:\t" + stats.getSentence();
@@ -193,7 +192,7 @@ public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
 
-    private void whereToSave() {
+    private void whereToSave() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File Dialog");
         fileChooser.setInitialFileName("sentiment");
@@ -205,11 +204,14 @@ public class Analyzer extends PrimaryController implements Initializable {
         if (whereToSave != null) {
             if (whereToSave.getAbsolutePath().endsWith(".xml")) {
                 writeXMLFile(whereToSave);
-            }else if(whereToSave.getAbsolutePath().endsWith(".csv")){
+                alertInfo("XML");
+            } else if (whereToSave.getAbsolutePath().endsWith(".csv")) {
+                writeToCSVFile(whereToSave);
+                alertInfo("CSV");
 
             }
 
-        }else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("OBS! The File could not be saved");
             alert.show();
@@ -237,6 +239,31 @@ public class Analyzer extends PrimaryController implements Initializable {
                 ioException.printStackTrace();
             }
         }
+    }
+
+    private void writeToCSVFile(File file) throws IOException {
+        Table table;
+        FileExporter fileExporter;
+
+        try {
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            PrintWriter printWriter = new PrintWriter(bufferedWriter);
+            for (int i = 0; i < tableView.getItems().size(); i++) {
+                table = tableView.getItems().get(i);
+                fileExporter = new FileExporter(table.getTarget(), table.getSubject(), table.getPolarity());
+                printWriter.println(fileExporter.getTarget()+","+fileExporter.getSubject()+","+fileExporter.getPolarity());
+            }
+            printWriter.close();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+    private Alert alertInfo(String fileExtn){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Your "+ fileExtn+" file is successfully saved");
+        alert.show();
+        return alert;
     }
 }
 
