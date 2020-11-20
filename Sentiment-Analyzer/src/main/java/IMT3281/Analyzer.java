@@ -94,11 +94,7 @@ public class Analyzer extends PrimaryController implements Initializable {
     }
 
     private ObservableList<Table> getInfo() {
-//        int pos, neg ,neu;
-//            pos=neg=neu=0;
 
-
-//        String overAllPol = "";
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table> tableObservableList = FXCollections.observableArrayList();
@@ -151,7 +147,7 @@ public class Analyzer extends PrimaryController implements Initializable {
             }
         }
 
-        showStatistics(stats);
+        showStatistics(stats, fileStats);
         return tableObservableList;
     }
 
@@ -165,12 +161,24 @@ public class Analyzer extends PrimaryController implements Initializable {
         instruction();
     }
 
-    private void showStatistics(Statistics stats) {
-        String statContent = "\t\t\t Statistics\n\n" +
-                "\t\tFiles Selected:\t" + file.size() +
-                "\n\t\tPositive:\t\t" + stats.getPos() + "\n\t\tNegative:\t\t"
-                + stats.getNeg() + "\n\t\tNeutral:\t\t" + stats.getNeu()
-                + "\n\t\tSentences:\t" + stats.getSentence();
+    private void showStatistics(Statistics stats, Statistics fileStats) {
+        String statContent = "";
+        if (file.size() > 1) {
+            statContent +=  "\t\tStatistics\n\n"+
+                    "Files Selected:\t " + file.size() + "\n\tPer-sentence" + "\tPer-file" +
+                    "\nPositive:\t\t" + stats.getPos() + "\t   " + fileStats.getFilePos() +
+                    "\nNegative:\t\t" + stats.getNeg() + "\t   " + fileStats.getFileNeg() +
+                    "\nNeutral:\t\t" + stats.getNeu() + "\t   " + fileStats.getFileNeu() +
+                    "\n\nTotal sentences:\t" + stats.getSentence();
+        }
+        else {
+            statContent += "\t\t Statistics\n\n"+
+                    "\tFiles Selected:\t "+file.size()+
+                    "\n\tPositive:\t\t" + stats.getPos() + "\n\tNegative:\t\t"
+                    + stats.getNeg() + "\n\tNeutral:\t\t" + stats.getNeu() +
+                    "\n\tSentences:\t" + stats.getSentence();
+        }
+
         String subjContent = "\t\t\t Subjects\n\n" + stats.getSubjects();
 
         stat.setEditable(false);
@@ -181,17 +189,6 @@ public class Analyzer extends PrimaryController implements Initializable {
         subjects.setWrapText(true);
         subjects.setText(subjContent);
 
-    }
-
-    private String overAllPolarity(int pos, int neg, int neu) {
-        String overAllPolarity = "";
-        if (pos > neg && pos > neu)
-            overAllPolarity = "positive";
-        else if (neg > pos && neg > neu)
-            overAllPolarity = "negative";
-        else
-            overAllPolarity = "neutral";
-        return overAllPolarity;
     }
 
     @FXML
@@ -207,11 +204,9 @@ public class Analyzer extends PrimaryController implements Initializable {
         whereToSave = fileChooser.showSaveDialog(stage);
         if (whereToSave != null) {
             if (whereToSave.getAbsolutePath().endsWith(".xml")) {
-                infoAlert("XML");
                 writeXMLFile(whereToSave);
             }else if(whereToSave.getAbsolutePath().endsWith(".csv")){
-                infoAlert("CSV");
-                writeCSVFile(whereToSave);
+
             }
 
         }else {
@@ -241,36 +236,7 @@ public class Analyzer extends PrimaryController implements Initializable {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-
         }
-    }
-
-    private void writeCSVFile(File file){
-        FileExporter fileExporter;
-        Table table;
-        try {
-            FileWriter fileWriter = new FileWriter(file,true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            PrintWriter printWriter = new PrintWriter(bufferedWriter);
-            for (int i = 0; i < tableView.getItems().size(); i++) {
-                table = tableView.getItems().get(i);
-                fileExporter = new FileExporter(table.getTarget(), table.getSubject(), table.getPolarity());
-                printWriter.println(fileExporter.getTarget()+","+fileExporter.getSubject()+","+fileExporter.getPolarity());
-                printWriter.flush();
-            }
-            printWriter.close();
-
-
-        }catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
-    }
-
-    private Alert infoAlert(String fileExt){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Your "+fileExt+" file is Successfully saved");
-        alert.show();
-        return alert;
     }
 }
 
