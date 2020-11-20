@@ -13,6 +13,22 @@ public class Statistics {
 
     private int sentences = 0;
 
+    private int filePos = 0;
+    private int fileNeg = 0;
+    private int fileNeu = 0;
+
+    public int getFilePos() {
+        return filePos;
+    }
+
+    public int getFileNeg() {
+        return fileNeg;
+    }
+
+    public int getFileNeu() {
+        return fileNeu;
+    }
+
     public Statistics(){
     }
 
@@ -31,12 +47,15 @@ public class Statistics {
     public String getMax() {
         int max = Collections.max(Arrays.asList(list));
         if (list[0] == max) {
+            filePos++;
             return pos;
         }
         else if(list[1] == max) {
+            fileNeg++;
             return neg;
         }
         else {
+            fileNeu++;
             return neu;
         }
     }

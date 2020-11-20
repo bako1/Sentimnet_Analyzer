@@ -3,9 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" prefHeight="568.0" prefWidth="1009.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.Analyzer">
+<AnchorPane fx:id="root" prefHeight="568.0" prefWidth="1009.0" xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.Analyzer">
 
     <MenuBar prefHeight="25.0" prefWidth="1000.0">
 
@@ -33,13 +32,13 @@
             <MenuItem mnemonicParsing="false" text="Version" />
         </Menu>
         <Menu mnemonicParsing="false" text="Export">
-            <MenuItem fx:id="exportToXML" text="Export to XML" onAction="#writeToXML">
+            <MenuItem fx:id="exportToXML" text="Export to XML">
                 <accelerator>
                     <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
                 </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="exportToCSV" text="Export to CSV" />
+            <MenuItem fx:id="exportToCSV" text="Export to CSV"/>
         </Menu>
 
     </MenuBar>
@@ -61,12 +60,9 @@
         </TableView>
     </GridPane>
     <HBox layoutX="6.0" layoutY="399.0" prefHeight="139.0" prefWidth="250">
-        <TextArea fx:id="stat" prefHeight="139.0" prefWidth="320.0" />
+        <TextArea fx:id="stat" prefHeight="145.0" prefWidth="225" />
     </HBox>
     <HBox layoutX="262.0" layoutY="399.0" prefHeight="139.0" prefWidth="750.0">
-        <TextArea fx:id="subjects" editable="false" prefHeight="139.0" prefWidth="758.0">
-         <font>
-            <Font size="16.0" />
-         </font></TextArea>
+        <TextArea fx:id="subjects" prefHeight="145.0" prefWidth="744" />
     </HBox>
 </AnchorPane>
