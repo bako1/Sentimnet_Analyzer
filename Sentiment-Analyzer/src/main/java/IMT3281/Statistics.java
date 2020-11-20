@@ -60,6 +60,7 @@ public class Statistics {
     }
 
     public String getSubjects() {
+
         String subs = "";
         for (Map.Entry<String, ArrayList<String>> entry : subjects.entrySet()) {
             subs += entry.getKey();

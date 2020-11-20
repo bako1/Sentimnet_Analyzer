@@ -16,6 +16,7 @@ public class Table {
     public void setProcessedSentence(ArrayList<String> processedSentence) {
         this.processedSentence = processedSentence;
     }
+    public Table(){}
     public Table(String target,String subject,String polarity){
         this.target = target;
         this.subject = subject;

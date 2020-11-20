@@ -3,8 +3,6 @@ package IMT3281;
 import edu.stanford.nlp.ie.util.RelationTriple;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
-import edu.stanford.nlp.pipeline.CoreDocument;
-import edu.stanford.nlp.pipeline.CoreSentence;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
@@ -12,29 +10,25 @@ import edu.stanford.nlp.util.CoreMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 
+import java.beans.XMLEncoder;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
 
 public class Analyzer extends PrimaryController implements Initializable {
@@ -57,6 +51,7 @@ public class Analyzer extends PrimaryController implements Initializable {
     private  AnchorPane root;
     @FXML
     public static File whereToSave;
+    private Table tableInfo = null;
 
     public Analyzer(){
 
@@ -86,11 +81,11 @@ public class Analyzer extends PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-            subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
-            polarity.setCellValueFactory(new PropertyValueFactory<>("polarity"));
-            target.setCellValueFactory(new PropertyValueFactory<>("target"));
-            tableView.setItems(getInfo());
-            tableView.setVisible(true);
+        subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        polarity.setCellValueFactory(new PropertyValueFactory<>("polarity"));
+        target.setCellValueFactory(new PropertyValueFactory<>("target"));
+        tableView.setItems(getInfo());
+        tableView.setVisible(true);
     }
     private ObservableList<Table> getInfo() {
 //        int pos, neg ,neu;
@@ -108,8 +103,8 @@ public class Analyzer extends PrimaryController implements Initializable {
         String subject;
 
         Annotation doc;
-        Table table = null;
-        FileExporter fileExporter;
+        Table table;
+
 
         HashMap<String, String>listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
 
@@ -138,7 +133,7 @@ public class Analyzer extends PrimaryController implements Initializable {
 
                 if(file.size()==1){
                     table = new Table(sentence.toString(), subject, sentiment);
-                    //fileExporter = new FileExporter(sentence.toString(), subject, sentiment,);
+
                     tableObservableList.add(table);
                 }
             }
@@ -190,8 +185,59 @@ public class Analyzer extends PrimaryController implements Initializable {
         return overAllPolarity;
     }
 
-
     public void whereToSave() {
 
-    }
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Save File Dialog");
+    fileChooser.setInitialFileName("sentiment");
+    Stage stage = (Stage) root.getScene().getWindow();
+    fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("XML file", "*.XML"),
+            new FileChooser.ExtensionFilter("csv file", "*.csv"));
+try {
+
+
+    whereToSave = fileChooser.showSaveDialog(stage);
+    System.out.println(whereToSave);
+}catch (Exception fne){
+    System.out.println(fne);
 }
+
+}
+
+@FXML
+private void writeToXML() {
+        FileExporter fileExporter = new FileExporter();
+        Table table;
+        //if(file.size()==1){
+            for (int i = 0; i<tableView.getItems().size();i++){
+                table = tableView.getItems().get(i);
+                fileExporter.setTarget(table.getTarget());
+                fileExporter.setSubject(table.getSubject());
+                fileExporter.setPolarity(table.getPolarity());
+           // }
+        }
+        //   FileExporter fileExporter = new FileExporter()
+        whereToSave();
+        if (whereToSave != null) {
+            try (FileOutputStream fileOutputStream = new FileOutputStream(whereToSave)) {
+                XMLEncoder encoder = new XMLEncoder(fileOutputStream);
+                for (int i = 0; i < tableView.getItems().size(); i++) {
+                    encoder.writeObject(fileExporter);}
+                encoder.close();
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+            } catch (IOException ioException) {
+                System.out.println(ioException.getMessage());
+            }
+        }else {
+            Alert alert =   new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("File would not bee saved");
+            alert.show();
+        }
+
+
+
+}
+}
+

@@ -1,28 +1,42 @@
+
+
 package IMT3281;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
 public class FileExporter {
-    private String sentence;
+    private String target;
     private String polarity;
     private String subject;
-    private File file;
-    public FileExporter(String sentence,String subject,String polarity,File file){
-        this.sentence = sentence;
+    Analyzer analyzer;
+    public FileExporter(){
+        analyzer = new Analyzer();
+
+
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public void setPolarity(String polarity) {
         this.polarity = polarity;
+    }
+
+    public void setSubject(String subject) {
         this.subject = subject;
-        this.file = file;
-
     }
-    public void writeXMLFile() throws FileNotFoundException {
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
 
-
+    public String getTarget() {
+        return target;
     }
-    public void writeCSVFile(){
 
-
+    public String getPolarity() {
+        return polarity;
     }
+
+    public String getSubject() {
+        return subject;
+    }
+    //public
 }
+
+
