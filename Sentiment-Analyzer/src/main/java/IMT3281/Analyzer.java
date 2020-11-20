@@ -207,9 +207,11 @@ public class Analyzer extends PrimaryController implements Initializable {
         whereToSave = fileChooser.showSaveDialog(stage);
         if (whereToSave != null) {
             if (whereToSave.getAbsolutePath().endsWith(".xml")) {
+                infoAlert("XML");
                 writeXMLFile(whereToSave);
             }else if(whereToSave.getAbsolutePath().endsWith(".csv")){
-
+                infoAlert("CSV");
+                writeCSVFile(whereToSave);
             }
 
         }else {
@@ -239,8 +241,36 @@ public class Analyzer extends PrimaryController implements Initializable {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-            //   }
+
         }
+    }
+
+    private void writeCSVFile(File file){
+        FileExporter fileExporter;
+        Table table;
+        try {
+            FileWriter fileWriter = new FileWriter(file,true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            PrintWriter printWriter = new PrintWriter(bufferedWriter);
+            for (int i = 0; i < tableView.getItems().size(); i++) {
+                table = tableView.getItems().get(i);
+                fileExporter = new FileExporter(table.getTarget(), table.getSubject(), table.getPolarity());
+                printWriter.println(fileExporter.getTarget()+","+fileExporter.getSubject()+","+fileExporter.getPolarity());
+                printWriter.flush();
+            }
+            printWriter.close();
+
+
+        }catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+
+    private Alert infoAlert(String fileExt){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Your "+fileExt+" file is Successfully saved");
+        alert.show();
+        return alert;
     }
 }
 
