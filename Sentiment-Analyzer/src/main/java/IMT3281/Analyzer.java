@@ -3,8 +3,7 @@ package IMT3281;
 import edu.stanford.nlp.ie.util.RelationTriple;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
-import edu.stanford.nlp.pipeline.CoreDocument;
-import edu.stanford.nlp.pipeline.CoreSentence;
+
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
@@ -12,7 +11,6 @@ import edu.stanford.nlp.util.CoreMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,15 +23,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.beans.XMLEncoder;
 import java.io.*;
 import java.net.URL;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
 
 public class Analyzer extends PrimaryController implements Initializable {
@@ -130,11 +123,9 @@ public class Analyzer extends PrimaryController implements Initializable {
                 fileStats.addStat(sentiment);
                 stats.addSentence();
 
-                //System.out.println("Sentiments: " + read.getKey() + " " + sentence.toString() + " " + sentiment + " " + subject); // Console version of output, for debugging
 
                 if (file.size() == 1) {
                     table = new Table(sentence.toString(), subject, sentiment);
-                    //fileExporter = new FileExporter(sentence.toString(), subject, sentiment,);
                     tableObservableList.add(table);
                 }
             }

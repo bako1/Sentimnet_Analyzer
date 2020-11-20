@@ -5,17 +5,17 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import javafx.scene.control.Alert;
+
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class ReadFiles {
     private List<String> sentence;
