@@ -5,27 +5,24 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import javafx.scene.control.Alert;
+
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class ReadFiles {
-    private List<String> sentence;
 
     public ReadFiles() {
     }
 
-    /**
-     * @return returns HashMap with fileName being key, and lists of sentences as value.
-     */
+    // Logic to get raw string from .txt files
     public int readTextFile(File file, HashMap<String, String> map) {
         try {
             //reads all lines in the file
@@ -38,6 +35,7 @@ public class ReadFiles {
         return 0;
     }
 
+    // Logic to get raw string from .doc files
     public int readDocsFile(File file, HashMap<String, String> map) {
         try {
             FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
@@ -55,6 +53,7 @@ public class ReadFiles {
         return 0;
     }
 
+    // Logic to get raw string from .csv files
     public int readCSVFile(File file, HashMap<String, String> map) {
         String text = "";
         try {
@@ -62,8 +61,7 @@ public class ReadFiles {
             // class with csv file as parameter.
             FileReader filereader = new FileReader(file);
 
-            // create csvParser object with
-            // custom seperator semi-colon
+            // create csvParser object
             CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
 
             // create csvReader object with
@@ -90,10 +88,11 @@ public class ReadFiles {
         return 0;
     }
 
-    public List<String> getSentence() {
-        return sentence;
-    }
-
+    /**
+     *
+     * @param files List of files to read
+     * @return HashMap where the keys are the file names and the value of each key is the file contents.
+     */
     public HashMap<String, String> readFiles(List<File> files) {
         HashMap<String, String> fileAndLines = new HashMap<String, String>();
 
@@ -114,4 +113,3 @@ public class ReadFiles {
         return fileAndLines;
     }
 }
-
