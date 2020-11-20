@@ -26,8 +26,12 @@ import javafx.stage.Stage;
 import java.beans.XMLEncoder;
 import java.io.*;
 import java.net.URL;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Iterator;
 
-import java.util.*;
 
 public class Analyzer extends PrimaryController implements Initializable {
 
@@ -88,11 +92,59 @@ public class Analyzer extends PrimaryController implements Initializable {
 
     private ObservableList<Table> getInfo() {
 
+        if(file.size() > 1) {
+            return getMultipleInfo();
+        }
+        else {
+            ReadFiles readFiles = new ReadFiles();
+            StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
+            ObservableList<Table> tableObservableList = FXCollections.observableArrayList();
+            Statistics stats = new Statistics();
+
+            String sentiment;
+            String text;
+            String subject;
+
+            Annotation doc;
+            Table table;
+
+            HashMap<String, String> listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
+
+            String[] key = listHashMap.keySet().toArray(new String[1]);
+            doc = new Annotation(listHashMap.get(key[0]));
+            stanfordCoreNLP.annotate(doc);
+            for (CoreMap sentence : doc.get(CoreAnnotations.SentencesAnnotation.class)) { // For every sentence
+
+                sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
+                subject = "No subject or unknown";
+
+                Collection<RelationTriple> triples = sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
+                Iterator<RelationTriple> it = triples.iterator();
+
+                if (it.hasNext()) {
+                    subject = it.next().subjectGloss();
+                    stats.addSubject(key[0], subject);
+                }
+
+                stats.addStat(sentiment);
+                stats.addSentence();
+
+                table = new Table(sentence.toString(), subject, sentiment);
+                tableObservableList.add(table);
+            }
+
+            showStatistics(stats);
+            return tableObservableList;
+        }
+    }
+
+    private ObservableList<Table> getMultipleInfo() {
+
         ReadFiles readFiles = new ReadFiles();
         StanfordCoreNLP stanfordCoreNLP = PipeLine.getPipeLine();
         ObservableList<Table> tableObservableList = FXCollections.observableArrayList();
         Statistics stats = new Statistics();
-        Statistics fileStats = new Statistics();
+
         String sentiment;
         String text;
         String subject;
@@ -120,25 +172,18 @@ public class Analyzer extends PrimaryController implements Initializable {
                 }
 
                 stats.addStat(sentiment);
-                fileStats.addStat(sentiment);
                 stats.addSentence();
 
-
-                if (file.size() == 1) {
-                    table = new Table(sentence.toString(), subject, sentiment);
-                    tableObservableList.add(table);
-                }
             }
 
-            if (file.size() > 1) {
-                table = new Table(read.getKey(), fileStats.getMax());
+                table = new Table(read.getKey(), stats.getMax());
                 tableObservableList.add(table);
-                fileStats.reset();
             }
-        }
 
-        showStatistics(stats, fileStats);
-        return tableObservableList;
+            tableView.getColumns().remove(1);
+
+            showStatistics(stats);
+            return tableObservableList;
     }
 
     @FXML
@@ -151,14 +196,14 @@ public class Analyzer extends PrimaryController implements Initializable {
         instruction();
     }
 
-    private void showStatistics(Statistics stats, Statistics fileStats) {
+    private void showStatistics(Statistics stats) {
         String statContent = "";
         if (file.size() > 1) {
             statContent += "\t\tStatistics\n\n" +
                     "Files Selected:\t " + file.size() + "\n\tPer-sentence" + "\tPer-file" +
-                    "\nPositive:\t\t" + stats.getPos() + "\t   " + fileStats.getFilePos() +
-                    "\nNegative:\t\t" + stats.getNeg() + "\t   " + fileStats.getFileNeg() +
-                    "\nNeutral:\t\t" + stats.getNeu() + "\t   " + fileStats.getFileNeu() +
+                    "\nPositive:\t\t" + stats.getPos() + "\t   " + stats.getFilePos() +
+                    "\nNegative:\t\t" + stats.getNeg() + "\t   " + stats.getFileNeg() +
+                    "\nNeutral:\t\t" + stats.getNeu() + "\t   " + stats.getFileNeu() +
                     "\n\nTotal sentences:\t" + stats.getSentence();
         } else {
             statContent += "\t\t Statistics\n\n" +

@@ -26,6 +26,8 @@ public class App extends Application {
         stage.getIcons().add(new Image(App.class.getResourceAsStream("sentiment.png")));
         stage.show();
         createPipe pipeFactory = new createPipe();
-        pipeFactory.start();
+
+                             // Attempting to create the StanfordNLP object in another thread, as this is what
+        pipeFactory.start(); // takes the most time, by far. Only noticeable if the user doesn't immediately look for files.
     }
 }

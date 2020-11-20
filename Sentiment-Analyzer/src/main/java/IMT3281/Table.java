@@ -2,21 +2,13 @@ package IMT3281;
 
 import java.util.ArrayList;
 
+// Information needed by the FXML table.
 public class Table {
     private String target;
     private String subject;
     private String polarity;
     private String sentence;
-    private ArrayList<String> processedSentence;
 
-    public ArrayList<String> getProcessedSentence() {
-        return processedSentence;
-    }
-
-    public void setProcessedSentence(ArrayList<String> processedSentence) {
-        this.processedSentence = processedSentence;
-    }
-    public Table(){}
     public Table(String target, String polarity){
         this.target = target;
         this.polarity = polarity;
@@ -37,14 +29,6 @@ public class Table {
 
     public String getPolarity() {
         return polarity;
-    }
-
-    public String getSentence() {
-        return sentence;
-    }
-
-    public void setSentence(String sentence) {
-        this.sentence = sentence;
     }
 
     public void setTarget(String fileName) {

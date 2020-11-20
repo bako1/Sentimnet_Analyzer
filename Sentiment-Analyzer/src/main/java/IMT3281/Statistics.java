@@ -2,6 +2,7 @@ package IMT3281;
 
 import java.util.*;
 
+// Some logic for maintaining stats.
 public class Statistics {
     Integer[] list = {0, 0, 0}; // Positive, negative, neutral
 
@@ -60,13 +61,6 @@ public class Statistics {
         }
     }
 
-    public void reset() {
-        this.sentences = 0;
-        for (int i = 0; i < 3; i++) {
-            list[i] = 0;
-        }
-    }
-
     public void addSubject(String file, String subject) {
         if (subjects.containsKey(file)) {
             subjects.get(file).add(subject);
@@ -105,9 +99,9 @@ public class Statistics {
     }
 
     public int addStat(String str) {
-        if (str.equalsIgnoreCase(pos)) {
+        if (str.equalsIgnoreCase(pos) || str.equalsIgnoreCase("Very " + pos)) {
             list[0]++;
-        } else if (str.equalsIgnoreCase(neg)) {
+        } else if (str.equalsIgnoreCase(neg) || str.equalsIgnoreCase("Very " + neg)) {
             list[1]++;
         } else if (str.equalsIgnoreCase(neu)) {
             list[2]++;

@@ -20,9 +20,6 @@ public class PrimaryController {
     private AnchorPane root;
     @FXML
     public static List<File> file;
-    public int test = 0;
-
-
 
     public PrimaryController() {
     }
@@ -30,17 +27,19 @@ public class PrimaryController {
     @FXML
     public void FileChooser() throws IOException {
 
+        // File open dialog
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Multiple file");
         Stage stage = (Stage) root.getScene().getWindow();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("text file", "*.txt"),
-                new FileChooser.ExtensionFilter("doc", "*.doc"),
-                new FileChooser.ExtensionFilter("csv file", "*.csv"));
+                new FileChooser.ExtensionFilter("Supported types", "*.txt", "*.doc", "*.csv"),
+                new FileChooser.ExtensionFilter("Text file", "*.txt"),
+                new FileChooser.ExtensionFilter("Word Document", "*.doc"),
+                new FileChooser.ExtensionFilter("Comma-separated", "*.csv"));
         file = fileChooser.showOpenMultipleDialog(stage);
 
         Parent parent;
-        if (file != null) {
+        if (file != null) { // File is selected
             parent = FXMLLoader.load(getClass().getResource("FileChooser.fxml"));
             Scene scene = new Scene(parent);
             stage.setScene(scene);
@@ -53,13 +52,12 @@ public class PrimaryController {
     }
 
 @FXML
-    public void onExit() {
-
+    public void onExit() { // Exiting
     System.exit(0);
     }
 
     @FXML
-    public void instruction() throws IOException {
+    public void instruction() throws IOException { // Load instructions.txt as new Scene
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("IMT3281/instruction.txt").getFile());
 
@@ -82,16 +80,19 @@ public class PrimaryController {
         alert.show();
         return alert;
     }
+
+    //Some basic info buttons
+
 @FXML
     public void authorInfo() {
         String info = "Abdi Bako \n" +
-                " Amr Hamcho\n" +
+                "Amr Hamcho\n" +
                 "Eirik Tobiassen ";
         information(info);
     }
     @FXML
     public void contactInfo() {
-        String info = "students@ntnu: Gjøvik";
+        String info = "abdimb@stud.ntnu.no\namrhh@stud.ntnu.no\neiriktob@stud.ntnu.no";
         information(info);
     }
     @FXML

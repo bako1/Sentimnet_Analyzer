@@ -29,23 +29,15 @@
         </Menu>
         <Menu mnemonicParsing="false" text="About">
             <MenuItem mnemonicParsing="false" onAction="#authorInfo" text="Author" />
-            <MenuItem mnemonicParsing="false" onAction="#contactInfo" text="Contacts" />
+            <MenuItem mnemonicParsing="false" onAction="#contactInfo" text="Contact" />
             <MenuItem mnemonicParsing="false" onAction="#versionInfo" text="Version" />
         </Menu>
         <Menu mnemonicParsing="false" text="Export">
-            <MenuItem fx:id="exportToXML" onAction="#whereToSave" text="Export to XML">
+            <MenuItem fx:id="exportToXML" onAction="#whereToSave" text="Export">
                 <accelerator>
                     <KeyCodeCombination alt="ANY" code="X" control="UP" meta="UP" shift="UP" shortcut="UP" />
                 </accelerator>
             </MenuItem>
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="exportToCSV" onAction="#whereToSave" text="Export to CSV">
-            <accelerator>
-               <KeyCodeCombination alt="ANY" code="C" control="UP" meta="UP" shift="UP" shortcut="UP" />
-            </accelerator></MenuItem>
-            <accelerator>
-                <KeyCodeCombination alt="ANY" code="C" control="UP" meta="UP" shift="UP" shortcut="UP" />
-            </accelerator>
         </Menu>
 
     </MenuBar>

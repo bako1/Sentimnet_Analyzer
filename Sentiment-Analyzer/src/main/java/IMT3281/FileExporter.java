@@ -1,5 +1,3 @@
-
-
 package IMT3281;
 
 public class FileExporter {
@@ -17,18 +15,6 @@ public class FileExporter {
         this.subject = subject;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public void setPolarity(String polarity) {
-        this.polarity = polarity;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
     public String getTarget() {
         return target;
     }
@@ -40,8 +26,4 @@ public class FileExporter {
         return subject;
     }
 
-    }
-
-
-
-
+}

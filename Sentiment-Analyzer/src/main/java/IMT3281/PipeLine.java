@@ -12,7 +12,7 @@ public class PipeLine {
     private PipeLine(){
 
     }
-    //Load alla the annotator into the property
+    //Load all annotators into the property
     static {
         properties = new Properties();
         properties.setProperty("annotators",propertiesName);
