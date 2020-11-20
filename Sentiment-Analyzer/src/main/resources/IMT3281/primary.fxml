@@ -9,11 +9,6 @@
             xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.PrimaryController">
     <MenuBar layoutX="-3.0" layoutY="-7.0" prefHeight="25.0" prefWidth="1070.0" style="-fx-background-color: white;">
         <Menu mnemonicParsing="false" text="File">
-            <!--<MenuItem fx:id="browseSingleFile" onAction="#fileChooser" text="Browse Single File">
-                     <accelerator>
-                        <KeyCodeCombination alt="ANY" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>-->
             <MenuItem fx:id="multipleFile" mnemonicParsing="false" onAction="#FileChooser" text="Browse files">
                 <accelerator>
                     <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />

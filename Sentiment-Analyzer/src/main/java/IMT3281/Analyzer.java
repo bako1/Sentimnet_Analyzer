@@ -105,8 +105,7 @@ public class Analyzer extends PrimaryController implements Initializable {
         String subject;
 
         Annotation doc;
-        Table table = null;
-        FileExporter fileExporter;
+        Table table;
 
         HashMap<String, String> listHashMap = readFiles.readFiles(file); // Read all files the PrimaryController has in memory
 
