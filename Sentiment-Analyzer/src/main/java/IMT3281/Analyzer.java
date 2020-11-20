@@ -12,21 +12,23 @@ import edu.stanford.nlp.util.CoreMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
+import java.beans.XMLEncoder;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
@@ -52,6 +54,7 @@ public class Analyzer extends PrimaryController implements Initializable {
 
     @FXML
     private  AnchorPane root;
+    private File whereToSave;
 
     public Analyzer(){
 
@@ -184,6 +187,47 @@ public class Analyzer extends PrimaryController implements Initializable {
             overAllPolarity = "neutral";
         return overAllPolarity;
     }
+@FXML
 
+    private void whereToSave() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File Dialog");
+        fileChooser.setInitialFileName("sentiment");
 
+        Stage stage = (Stage) root.getScene().getWindow();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("xml", "*.xml"),
+                new FileChooser.ExtensionFilter("csv file", "*.csv"));
+        whereToSave = fileChooser.showSaveDialog(stage);
+
+        for (int i = 0; i <tableView.getItems().size() ; i++) {
+            FileExporter fileExporter = new FileExporter();
+            Table table;
+            table = tableView.getItems().get(i);
+            fileExporter.setTarget(table.getTarget());
+            fileExporter.setSubject(table.getSubject());
+            fileExporter.setPolarity(table.getPolarity());
+            writeXMLFile(fileExporter);
+        }
+
+}
+private void writeXMLFile(FileExporter fileExporter){
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(whereToSave);
+            if(whereToSave!=null){
+                XMLEncoder xmlEncoder = new XMLEncoder(fileOutputStream);
+                xmlEncoder.writeObject(fileExporter);
+                xmlEncoder.close();
+                fileOutputStream.close();
+            }else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("OBS! File could not be saved");
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+}
 }

@@ -6,9 +6,9 @@ public class FileExporter {
     private String target;
     private String polarity;
     private String subject;
-    Analyzer analyzer;
+
     public FileExporter(){
-        analyzer = new Analyzer();
+
 
 
     }
@@ -36,7 +36,7 @@ public class FileExporter {
     public String getSubject() {
         return subject;
     }
-    //public
+
 }
 
 

@@ -4,7 +4,7 @@
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="root" prefHeight="568.0" prefWidth="1009.0" xmlns="http://javafx.com/javafx/8.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.Analyzer">
+<AnchorPane fx:id="root" prefHeight="568.0" prefWidth="1009.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IMT3281.Analyzer">
 
     <MenuBar prefHeight="25.0" prefWidth="1000.0">
 
@@ -32,13 +32,13 @@
             <MenuItem mnemonicParsing="false" text="Version" />
         </Menu>
         <Menu mnemonicParsing="false" text="Export">
-            <MenuItem fx:id="exportToXML" text="Export to XML">
+            <MenuItem fx:id="exportToXML" onAction="#whereToSave" text="Export to XML">
                 <accelerator>
-                    <KeyCodeCombination alt="ANY" code="U" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                    <KeyCodeCombination alt="ANY" code="X" control="UP" meta="UP" shift="UP" shortcut="UP" />
                 </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="exportToCSV" text="Export to CSV" onAction="#export" />
+            <MenuItem fx:id="exportToCSV" text="Export to CSV" />
         </Menu>
 
     </MenuBar>
